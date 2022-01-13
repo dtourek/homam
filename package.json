@@ -1,0 +1,16 @@
+{
+  "name": "homam",
+  "version": "0.0.1",
+  "description": "Heroes of Might and Magic",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && node build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
+}
