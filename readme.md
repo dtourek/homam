@@ -1,0 +1,16 @@
+# Heroes of Might and Magic - purely in JavaScript (Typescript)
+
+
+## Features
+- role play game
+- resources to buy more army and buildings
+
+### Battle
+- move with army in hexagonal map during battle
+
+### World
+- move with your hero in octagonal map through world
+- obstacles
+- poi (castle, resources, army recruits, foes, wild enemy army, mines, ....)
+
+...and much more
