@@ -14,3 +14,17 @@
 - poi (castle, resources, army recruits, foes, wild enemy army, mines, ....)
 
 ...and much more
+
+# TODO
+ - Create 8 square map of fields
+ - render player on center field
+ - player can move on free land, not to obstacle
+ - 
+ - Fields will have these props:
+   - coordinates
+   - type 
+     - obstacle
+       - water
+       - mountain
+       - tree
+     - land
