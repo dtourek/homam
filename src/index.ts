@@ -11,6 +11,8 @@ if (!rootHtmlElement) {
   throw error
 }
 
+document.body.style.overflow = 'hidden'
+
 const config: IConfig = {
   unit: 20,
   store: getStore(),
