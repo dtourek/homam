@@ -1,5 +1,6 @@
+import { FieldType, getField } from './map/field';
 import { createSvgContainer, render } from './render';
-import { getStore } from './store';
+import { getStore, WorldMap } from './store';
 import { IConfig } from './types';
 
 const rootHtmlElement = document.getElementById('root');
@@ -11,15 +12,22 @@ if (!rootHtmlElement) {
 
 document.body.style.overflow = 'hidden';
 
+const initWorldMap: WorldMap = [
+  [getField(FieldType.water), getField(FieldType.forest), getField(FieldType.mountain), getField(FieldType.grass), getField(FieldType.grass), getField(FieldType.grass)],
+  [getField(FieldType.grass), getField(FieldType.grass), getField(FieldType.grass), getField(FieldType.mountain), getField(FieldType.mountain), getField(FieldType.grass)],
+  [getField(FieldType.water), getField(FieldType.water), getField(FieldType.mud), getField(FieldType.water), getField(FieldType.mud), getField(FieldType.mud)],
+  [getField(FieldType.mountain), getField(FieldType.mud), getField(FieldType.mud), getField(FieldType.water), getField(FieldType.mud), getField(FieldType.water)],
+  [getField(FieldType.mud), getField(FieldType.mud), getField(FieldType.mud), getField(FieldType.grass), getField(FieldType.mud), getField(FieldType.water)],
+  [getField(FieldType.mountain), getField(FieldType.mountain), getField(FieldType.mud), getField(FieldType.grass), getField(FieldType.mountain), getField(FieldType.mountain)],
+];
+
 const config: IConfig = {
   unit: 20,
-  store: getStore(),
+  store: getStore(initWorldMap, { location: { x: 1, y: 1 } }),
   rootHtmlElement: rootHtmlElement,
 };
 
 const main = ({ store, unit, rootHtmlElement }: IConfig) => {
-  store.init();
-
   const mainSvgElement = createSvgContainer({ width: '1000', height: '1000' });
   render(store, mainSvgElement, unit);
 

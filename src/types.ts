@@ -7,3 +7,7 @@ export interface IConfig {
   store: Store;
   rootHtmlElement: HTMLElement;
 }
+
+export interface IPlayer {
+  location: ILocation;
+}

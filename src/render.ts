@@ -1,7 +1,6 @@
 import { isObstacleField } from './map/field';
-import { IPlayer } from './player/player';
 import { Store } from './store';
-import { IConfig, ILocation } from './types';
+import { IConfig, ILocation, IPlayer } from './types';
 
 type HTMLAttributes = { [key: string]: string };
 
@@ -26,7 +25,7 @@ const renderUnit =
   (fill: string): SVGRectElement =>
     svgParent.appendChild(createRect({ x: `${x * unit}`, y: `${y * unit}`, width: `${unit}`, height: `${unit}`, fill }));
 
-export const render = (store: Store, svgParent: SVGSVGElement, unit: number) => {
+export const render = (store: Store, svgParent: SVGSVGElement, unit: number): void => {
   store.getMap().forEach((row, y) =>
     row.forEach((field, x) => {
       const unitElement = renderUnit(svgParent, unit, x, y);
