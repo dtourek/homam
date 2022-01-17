@@ -1,6 +1,5 @@
-
 export interface IField {
- type: FieldType
+  type: FieldType;
 }
 
 export enum FieldType {
@@ -8,12 +7,11 @@ export enum FieldType {
   mountain = 'mountain',
   forest = 'forest',
   grass = 'grass',
-  mud = 'mud'
+  mud = 'mud',
 }
 
-export const isObstacleField = (field: IField): boolean => field.type === FieldType.water || field.type === FieldType.forest || field.type === FieldType.mountain
+export const isObstacleField = (field: IField): boolean => field.type === FieldType.water || field.type === FieldType.forest || field.type === FieldType.mountain;
 
 export const getField = (type: FieldType): IField => ({
   type,
-})
-
+});

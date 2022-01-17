@@ -1,55 +1,53 @@
-import { IField, isObstacleField } from "./map/field";
-import { getPlayer, IPlayer } from "./player/player";
-import {createSvgContainer, render } from "./render";
-import { getStore, Store } from "./store";
-import {IConfig, ILocation } from "./types";
+import { createSvgContainer, render } from './render';
+import { getStore } from './store';
+import { IConfig } from './types';
 
-const rootHtmlElement = document.getElementById('root')
+const rootHtmlElement = document.getElementById('root');
 if (!rootHtmlElement) {
-  const error = new Error('Failed to get #root html element')
-  alert(error.message)
-  throw error
+  const error = new Error('Failed to get #root html element');
+  alert(error.message);
+  throw error;
 }
 
-document.body.style.overflow = 'hidden'
+document.body.style.overflow = 'hidden';
 
 const config: IConfig = {
   unit: 20,
   store: getStore(),
-  rootHtmlElement: rootHtmlElement
-}
+  rootHtmlElement: rootHtmlElement,
+};
 
 const main = ({ store, unit, rootHtmlElement }: IConfig) => {
-  store.init()
+  store.init();
 
-  const mainSvgElement = createSvgContainer({width: '1000', height: '1000'})
-  render(store, mainSvgElement, unit)
+  const mainSvgElement = createSvgContainer({ width: '1000', height: '1000' });
+  render(store, mainSvgElement, unit);
 
   document.addEventListener('keydown', (event: KeyboardEvent) => {
-    const player = store.getPlayer()
+    const player = store.getPlayer();
 
     if (event.code === 'ArrowDown') {
-      store.updatePlayerLocation({...player.location, y: player.location.y + 1})
-      render(store, mainSvgElement, unit)
+      store.updatePlayerLocation({ ...player.location, y: player.location.y + 1 });
+      render(store, mainSvgElement, unit);
     }
 
     if (event.code === 'ArrowUp') {
-      store.updatePlayerLocation({...player.location, y: player.location.y - 1})
-      render(store, mainSvgElement, unit)
+      store.updatePlayerLocation({ ...player.location, y: player.location.y - 1 });
+      render(store, mainSvgElement, unit);
     }
 
     if (event.code === 'ArrowLeft') {
-      store.updatePlayerLocation({...player.location, x: player.location.x - 1})
-      render(store, mainSvgElement, unit)
+      store.updatePlayerLocation({ ...player.location, x: player.location.x - 1 });
+      render(store, mainSvgElement, unit);
     }
 
     if (event.code === 'ArrowRight') {
-      store.updatePlayerLocation({...player.location, x: player.location.x + 1})
-      render(store, mainSvgElement, unit)
+      store.updatePlayerLocation({ ...player.location, x: player.location.x + 1 });
+      render(store, mainSvgElement, unit);
     }
-  })
+  });
 
-  rootHtmlElement.appendChild(mainSvgElement)
-}
+  rootHtmlElement.appendChild(mainSvgElement);
+};
 
-main(config)
+main(config);

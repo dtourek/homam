@@ -1,10 +1,9 @@
-import { isObstacleField} from "../map/field";
-import { ILocation } from "../types";
+import { ILocation } from '../types';
 
 export interface IPlayer {
-  location: ILocation
+  location: ILocation;
 }
 
-export const getPlayer = ({x, y}: ILocation): IPlayer => ({
-  location: { x, y }
-})
+export const getPlayer = ({ x, y }: ILocation): IPlayer => ({
+  location: { x, y },
+});
