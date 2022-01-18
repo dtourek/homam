@@ -22,8 +22,10 @@ export const createSvgContainer = (attributes: HTMLAttributes): SVGSVGElement =>
 const isPlayerOnField = (location: ILocation, player: IPlayer): boolean => location.x === player.location.x && location.y === player.location.y;
 const renderUnit =
   (svgParent: SVGSVGElement, unit: IConfig['unit'], x: ILocation['x'], y: ILocation['y']) =>
-  (fill: string): SVGRectElement =>
-    svgParent.appendChild(createRect({ x: `${x * unit}`, y: `${y * unit}`, width: `${unit}`, height: `${unit}`, fill }));
+  (fill: string): SVGRectElement => {
+    const element = createRect({ x: `${x * unit}`, y: `${y * unit}`, width: `${unit}`, height: `${unit}`, fill });
+    return svgParent.appendChild(element);
+  };
 
 export const render = (store: Store, svgParent: SVGSVGElement, unit: number): void => {
   store.getMap().forEach((row, y) =>
