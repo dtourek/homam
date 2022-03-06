@@ -14,11 +14,11 @@ describe('dijkstra algo', () => {
     });
 
     it('should return 1 adjacency list node without any neighbour', () => {
-      expect(toAdjacencyList([[{ type: FieldType.grass }]])).toEqual({ '00': [] });
+      expect(toAdjacencyList([[{ type: FieldType.grass }]])).toEqual({ '0,0': [] });
     });
 
     it('should return 2 adjacency list nodes', () => {
-      expect(toAdjacencyList([[{ type: FieldType.grass }, { type: FieldType.swamp }]])).toEqual({ '10': [{ node: '00', weight: 1 }], '00': [{ node: '10', weight: 2 }] });
+      expect(toAdjacencyList([[{ type: FieldType.grass }, { type: FieldType.swamp }]])).toEqual({ '1,0': [{ node: '0,0', weight: 1 }], '0,0': [{ node: '1,0', weight: 2 }] });
     });
 
     it('should return 3 walkable adjacency list nodes on 2x2 matrix where 1 field is mountain', () => {
@@ -28,68 +28,68 @@ describe('dijkstra algo', () => {
           [{ type: FieldType.mountain }, { type: FieldType.mud }],
         ]),
       ).toEqual({
-        '10': [
-          { node: '00', weight: 1 },
-          { node: '11', weight: 1 },
+        '1,0': [
+          { node: '0,0', weight: 1 },
+          { node: '1,1', weight: 1 },
         ],
-        '11': [
-          { node: '10', weight: 2 },
-          { node: '00', weight: 1 },
+        '1,1': [
+          { node: '1,0', weight: 2 },
+          { node: '0,0', weight: 1 },
         ],
-        '00': [
-          { node: '10', weight: 2 },
-          { node: '11', weight: 1 },
+        '0,0': [
+          { node: '1,0', weight: 2 },
+          { node: '1,1', weight: 1 },
         ],
       });
     });
 
     it('should return 8 walkable adjacency list nodes on 3x3 matrix where 1 field is mountain', () => {
       expect(toAdjacencyList(mapMock)).toEqual({
-        '10': [
-          { node: '00', weight: 1 },
-          { node: '20', weight: 1 },
-          { node: '11', weight: 1 },
-          { node: '21', weight: 2 },
+        '1,0': [
+          { node: '0,0', weight: 1 },
+          { node: '2,0', weight: 1 },
+          { node: '1,1', weight: 1 },
+          { node: '2,1', weight: 2 },
         ],
-        '11': [
-          { node: '21', weight: 2 },
-          { node: '10', weight: 2 },
-          { node: '12', weight: 1 },
-          { node: '00', weight: 1 },
-          { node: '02', weight: 1 },
-          { node: '22', weight: 2 },
-          { node: '20', weight: 1 },
+        '1,1': [
+          { node: '2,1', weight: 2 },
+          { node: '1,0', weight: 2 },
+          { node: '1,2', weight: 1 },
+          { node: '0,0', weight: 1 },
+          { node: '0,2', weight: 1 },
+          { node: '2,2', weight: 2 },
+          { node: '2,0', weight: 1 },
         ],
-        '12': [
-          { node: '02', weight: 1 },
-          { node: '22', weight: 2 },
-          { node: '11', weight: 1 },
-          { node: '21', weight: 2 },
+        '1,2': [
+          { node: '0,2', weight: 1 },
+          { node: '2,2', weight: 2 },
+          { node: '1,1', weight: 1 },
+          { node: '2,1', weight: 2 },
         ],
-        '20': [
-          { node: '10', weight: 2 },
-          { node: '21', weight: 2 },
-          { node: '11', weight: 1 },
+        '2,0': [
+          { node: '1,0', weight: 2 },
+          { node: '2,1', weight: 2 },
+          { node: '1,1', weight: 1 },
         ],
-        '21': [
-          { node: '11', weight: 1 },
-          { node: '20', weight: 1 },
-          { node: '22', weight: 2 },
-          { node: '10', weight: 2 },
-          { node: '12', weight: 1 },
+        '2,1': [
+          { node: '1,1', weight: 1 },
+          { node: '2,0', weight: 1 },
+          { node: '2,2', weight: 2 },
+          { node: '1,0', weight: 2 },
+          { node: '1,2', weight: 1 },
         ],
-        '22': [
-          { node: '12', weight: 1 },
-          { node: '21', weight: 2 },
-          { node: '11', weight: 1 },
+        '2,2': [
+          { node: '1,2', weight: 1 },
+          { node: '2,1', weight: 2 },
+          { node: '1,1', weight: 1 },
         ],
-        '00': [
-          { node: '10', weight: 2 },
-          { node: '11', weight: 1 },
+        '0,0': [
+          { node: '1,0', weight: 2 },
+          { node: '1,1', weight: 1 },
         ],
-        '02': [
-          { node: '12', weight: 1 },
-          { node: '11', weight: 1 },
+        '0,2': [
+          { node: '1,2', weight: 1 },
+          { node: '1,1', weight: 1 },
         ],
       });
     });
@@ -146,7 +146,7 @@ describe('dijkstra algo', () => {
 
     it('should find shortest path on transformed map to adjacency list', () => {
       const list = toAdjacencyList(mapMock);
-      expect(new Dijkstra(list).dijkstra('00', '22')).toEqual(['00', '11', '22']);
+      expect(new Dijkstra(list).dijkstra('0,0', '2,2')).toEqual(['0,0', '1,1', '2,2']);
     });
 
     it('should find shortest path on big map', () => {
@@ -158,7 +158,7 @@ describe('dijkstra algo', () => {
         [{ type: FieldType.grass }, { type: FieldType.grass }, { type: FieldType.grass }, { type: FieldType.mountain }, { type: FieldType.grass }],
       ];
 
-      expect(new Dijkstra(toAdjacencyList(map)).dijkstra('00', '44')).toEqual(['00', '01', '02', '03', '14', '23', '22', '21', '30', '41', '42', '43', '44']);
+      expect(new Dijkstra(toAdjacencyList(map)).dijkstra('0,0', '4,4')).toEqual(['0,0', '0,1', '0,2', '0,3', '1,4', '2,3', '2,2', '2,1', '3,0', '4,1', '4,2', '4,3', '4,4']);
     });
   });
 });

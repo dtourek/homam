@@ -29,6 +29,8 @@ interface IDistances {
 const isEmptyObject = (object: object): boolean => Object.keys(object).length === 0;
 const isNotUndefined = <T>(value: T | undefined): value is T => value !== undefined;
 const filter = <T>(array: Array<T | undefined>): T[] => array.filter(isNotUndefined);
+export const coordinatesToString = (x: number, y: number): string => `${x},${y}`;
+export const getCoordinates = (coordinates: string): string[] => coordinates.split(',');
 
 const getFieldWeight = (field: IField): number | undefined => {
   switch (field.type) {
@@ -62,7 +64,7 @@ const getAdjacencyNode =
 
     const weight = getFieldWeight(neighbour);
 
-    return weight ? { node: `${x}${y}`, weight } : undefined;
+    return weight ? { node: coordinatesToString(x, y), weight } : undefined;
   };
 
 const getNeighbours = (x: number, y: number, map: WorldMap, row: IField[]): AdjacencyListEdge[] => {
@@ -90,7 +92,7 @@ export const toAdjacencyList = (map: WorldMap): IAdjacencyList => {
   map.forEach((row, y) => {
     row.forEach((col, x) => {
       if (!isObstacleField(col)) {
-        result[`${x}${y}`] = getNeighbours(x, y, map, row);
+        result[coordinatesToString(x, y)] = getNeighbours(x, y, map, row);
       }
     });
   });
