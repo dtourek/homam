@@ -6,6 +6,7 @@ export interface IConfig {
   unit: number;
   store: Store;
   rootHtmlElement: HTMLElement;
+  mapMaxSize: number;
 }
 
 export interface IPlayer {
