@@ -18,10 +18,11 @@
 # TODO
 - [x] Player can move on free land, not to obstacle
 - [x] disable scrolling in browser
+- [x] Migrate to React
 - [ ] add oblique movement by using keyboard (numlock 7 - left up, 9 - right up, 1 - left down, 3 right down)
 - [ ] add mouse control move
-  - click on a field, make it target field, mark the shortest path
-  - double click to move player on that location(without move animation for now)
+  - [x] click on a field, make it target field, mark the shortest path
+  - [ ] double click to move player on that location(without move animation for now)
 - [ ] resources
   - player has resources - gold, wood, rock, gem, sulfur, mercury
   - new field type **resources**

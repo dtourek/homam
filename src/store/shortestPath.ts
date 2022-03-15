@@ -1,5 +1,5 @@
-import { FieldType, IField, isObstacleField } from './map/field';
-import { WorldMap } from './store';
+import {IField, ILocation, WorldMap} from "../interfaces";
+import {FieldType, isObstacleField} from "./utils";
 
 interface IQueueNode {
   value: string;
@@ -29,7 +29,7 @@ interface IDistances {
 const isEmptyObject = (object: object): boolean => Object.keys(object).length === 0;
 const isNotUndefined = <T>(value: T | undefined): value is T => value !== undefined;
 const filter = <T>(array: Array<T | undefined>): T[] => array.filter(isNotUndefined);
-export const coordinatesToString = (x: number, y: number): string => `${x},${y}`;
+export const coordinatesToString = (location: ILocation): string => `${location.x},${location.y}`;
 export const getCoordinates = (coordinates: string): string[] => coordinates.split(',');
 
 const getFieldWeight = (field: IField): number | undefined => {
@@ -64,7 +64,7 @@ const getAdjacencyNode =
 
     const weight = getFieldWeight(neighbour);
 
-    return weight ? { node: coordinatesToString(x, y), weight } : undefined;
+    return weight ? { node: coordinatesToString({x, y}), weight } : undefined;
   };
 
 const getNeighbours = (x: number, y: number, map: WorldMap, row: IField[]): AdjacencyListEdge[] => {
@@ -92,7 +92,7 @@ export const toAdjacencyList = (map: WorldMap): IAdjacencyList => {
   map.forEach((row, y) => {
     row.forEach((col, x) => {
       if (!isObstacleField(col)) {
-        result[coordinatesToString(x, y)] = getNeighbours(x, y, map, row);
+        result[coordinatesToString({x, y})] = getNeighbours(x, y, map, row);
       }
     });
   });
@@ -117,17 +117,8 @@ const queue = (initialValues: IQueueNode[] = []): IQueue => {
   };
 };
 
-export class Dijkstra {
+export class ShortestPath {
   constructor(private adjacencyList: IAdjacencyList = {}) {}
-
-  addVertex(name: string) {
-    if (!this.adjacencyList[name]) this.adjacencyList = { ...this.adjacencyList, [name]: [] };
-  }
-
-  addEdge(vertexA: string, vertexB: string, weight: number) {
-    this.adjacencyList[vertexA].push({ node: vertexB, weight });
-    this.adjacencyList[vertexB].push({ node: vertexA, weight });
-  }
 
   init(previous: IPrevious, nodes: IQueue, startVertex: string): IDistances {
     return Object.keys(this.adjacencyList).reduce((acc, key) => {
@@ -139,7 +130,7 @@ export class Dijkstra {
     }, {});
   }
 
-  dijkstra(startVertex: string, finishVertex: string) {
+  get(startVertex: string, finishVertex: string) {
     if (isEmptyObject(this.adjacencyList)) return [];
 
     if (!this.adjacencyList[startVertex] || !this.adjacencyList[finishVertex]) return [];

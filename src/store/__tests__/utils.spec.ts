@@ -1,6 +1,7 @@
-import { FieldType, getField, isObstacleField } from '../field';
+import {FieldType, isObstacleField} from "../utils";
+import {getField} from "../../init";
 
-describe('field', () => {
+describe('utils', () => {
   describe('isObstacleField', () => {
     it('should return true on water field', () => {
       expect(isObstacleField({ type: FieldType.water })).toEqual(true);
@@ -34,10 +35,6 @@ describe('field', () => {
 
     it('should return mountain field', () => {
       expect(getField(FieldType.mountain)).toEqual({ type: 'mountain' });
-    });
-
-    it('should return water field', () => {
-      expect(getField(FieldType.water)).toEqual({ type: 'water' });
     });
   });
 });

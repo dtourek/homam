@@ -1,5 +1,9 @@
-import { FieldType, getField } from './map/field';
-import { WorldMap } from './store';
+import {IField, IPlayer, WorldMap} from "./interfaces";
+import {FieldType} from "./store/utils";
+
+export const getField = (type: FieldType): IField => ({type})
+
+export const initPlayer: IPlayer = { location: {x: 1, y: 1} }
 
 export const initWorldMap: WorldMap = [
   [

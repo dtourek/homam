@@ -1,7 +1,7 @@
-import { Dijkstra, IAdjacencyList, toAdjacencyList } from '../../dijkstra';
-import { FieldType } from '../field';
+import {IAdjacencyList, ShortestPath, toAdjacencyList} from "../shortestPath";
+import {FieldType} from "../utils";
 
-describe('dijkstra algo', () => {
+describe('shortestPath', () => {
   const mapMock = [
     [{ type: FieldType.grass }, { type: FieldType.swamp }, { type: FieldType.mud }],
     [{ type: FieldType.mountain }, { type: FieldType.mud }, { type: FieldType.desert }],
@@ -97,20 +97,20 @@ describe('dijkstra algo', () => {
 
   describe('dijkstra algo', () => {
     it('should not find path when empty path sent', () => {
-      const graph = new Dijkstra({});
+      const graph = new ShortestPath({});
 
-      expect(graph.dijkstra('A', 'E')).toEqual([]);
+      expect(graph.get('A', 'E')).toEqual([]);
     });
 
     it('should not find path when trying to find path on non existent nodes', () => {
-      const graph = new Dijkstra({
+      const graph = new ShortestPath({
         A: [{ node: 'A', weight: 4 }],
         B: [{ node: 'B', weight: 4 }],
       });
 
-      expect(graph.dijkstra('A', 'X')).toEqual([]);
-      expect(graph.dijkstra('X', 'B')).toEqual([]);
-      expect(graph.dijkstra('X', 'Y')).toEqual([]);
+      expect(graph.get('A', 'X')).toEqual([]);
+      expect(graph.get('X', 'B')).toEqual([]);
+      expect(graph.get('X', 'Y')).toEqual([]);
     });
 
     it('should find shortest path', () => {
@@ -141,12 +141,12 @@ describe('dijkstra algo', () => {
           { node: 'D', weight: 1 },
         ],
       };
-      expect(new Dijkstra(adjacencyList).dijkstra('A', 'E')).toEqual(['A', 'C', 'D', 'F', 'E']);
+      expect(new ShortestPath(adjacencyList).get('A', 'E')).toEqual(['A', 'C', 'D', 'F', 'E']);
     });
 
     it('should find shortest path on transformed map to adjacency list', () => {
       const list = toAdjacencyList(mapMock);
-      expect(new Dijkstra(list).dijkstra('0,0', '2,2')).toEqual(['0,0', '1,1', '2,2']);
+      expect(new ShortestPath(list).get('0,0', '2,2')).toEqual(['0,0', '1,1', '2,2']);
     });
 
     it('should find shortest path on big map', () => {
@@ -158,7 +158,7 @@ describe('dijkstra algo', () => {
         [{ type: FieldType.grass }, { type: FieldType.grass }, { type: FieldType.grass }, { type: FieldType.mountain }, { type: FieldType.grass }],
       ];
 
-      expect(new Dijkstra(toAdjacencyList(map)).dijkstra('0,0', '4,4')).toEqual(['0,0', '0,1', '0,2', '0,3', '1,4', '2,3', '2,2', '2,1', '3,0', '4,1', '4,2', '4,3', '4,4']);
+      expect(new ShortestPath(toAdjacencyList(map)).get('0,0', '4,4')).toEqual(['0,0', '0,1', '0,2', '0,3', '1,4', '2,3', '2,2', '2,1', '3,0', '4,1', '4,2', '4,3', '4,4']);
     });
   });
 });
