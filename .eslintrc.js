@@ -28,6 +28,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'import', 'prettier'],
   root: true,
   rules: {
+    '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-empty-function': 0,
     '@typescript-eslint/no-var-requires': 1,
     '@typescript-eslint/ban-types': [1, { types: { object: false } }],
