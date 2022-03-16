@@ -1,8 +1,9 @@
-import {IUnit} from "./Map";
-import {MouseEvent} from "react";
+import React from 'react';
+import { IUnit } from './Map';
+import { MouseEvent } from 'react';
 
 interface IProps extends IUnit {
-  onUnitClick: (event: MouseEvent) => void
+  onUnitClick: (event: MouseEvent) => void;
 }
 
-export const Unit = (props: IProps) => <rect key={`${props.x},${props.y}`} {...props} onClick={props.onUnitClick} />
+export const Unit = (props: IProps) => <rect key={`${props.x},${props.y}`} {...props} onClick={props.onUnitClick} />;

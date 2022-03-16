@@ -1,5 +1,5 @@
-import {IField, ILocation, WorldMap} from "../interfaces";
-import {FieldType, isObstacleField} from "./utils";
+import { IField, ILocation, WorldMap } from '../interfaces';
+import { FieldType, isObstacleField } from './utils';
 
 interface IQueueNode {
   value: string;
@@ -64,7 +64,7 @@ const getAdjacencyNode =
 
     const weight = getFieldWeight(neighbour);
 
-    return weight ? { node: coordinatesToString({x, y}), weight } : undefined;
+    return weight ? { node: coordinatesToString({ x, y }), weight } : undefined;
   };
 
 const getNeighbours = (x: number, y: number, map: WorldMap, row: IField[]): AdjacencyListEdge[] => {
@@ -92,7 +92,7 @@ export const toAdjacencyList = (map: WorldMap): IAdjacencyList => {
   map.forEach((row, y) => {
     row.forEach((col, x) => {
       if (!isObstacleField(col)) {
-        result[coordinatesToString({x, y})] = getNeighbours(x, y, map, row);
+        result[coordinatesToString({ x, y })] = getNeighbours(x, y, map, row);
       }
     });
   });

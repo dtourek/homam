@@ -1,4 +1,4 @@
-import {cutHead} from "../tools";
+import { cutHead } from '../tools';
 
 describe('utils', () => {
   describe('cutHead', () => {

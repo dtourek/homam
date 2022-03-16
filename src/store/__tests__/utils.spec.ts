@@ -1,5 +1,5 @@
-import {FieldType, isObstacleField} from "../utils";
-import {getField} from "../../init";
+import { FieldType, isObstacleField } from '../utils';
+import { getField } from '../../init';
 
 describe('utils', () => {
   describe('isObstacleField', () => {

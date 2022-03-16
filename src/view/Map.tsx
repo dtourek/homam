@@ -1,10 +1,11 @@
-import { Unit } from './Unit'
-import { IContext } from "../App";
-import {coordinatesToString, getCoordinates, ShortestPath, toAdjacencyList} from "../store/shortestPath";
-import {FieldType, isObstacleField, isPathField, isPlayerField} from "../store/utils";
-import {pipe} from "fputils";
-import {cutHead} from "../tools";
-import {useStore} from "../store/useStore";
+import React from 'react';
+import { Unit } from './Unit';
+import { IContext } from '../App';
+import { coordinatesToString, getCoordinates, ShortestPath, toAdjacencyList } from '../store/shortestPath';
+import { FieldType, isObstacleField, isPathField, isPlayerField } from '../store/utils';
+import { pipe } from 'fputils';
+import { cutHead } from '../tools';
+import { useStore } from '../store/useStore';
 
 // https://coolors.co/020c16-1c1c1d-092c0f-789d99-e7e4a5-c2f3d6-c6b897
 const getFieldColor = (type: FieldType): string => {
@@ -29,7 +30,7 @@ const getFieldColor = (type: FieldType): string => {
 };
 
 interface IMapProps {
-  context: IContext
+  context: IContext;
 }
 
 export interface IUnit {
@@ -42,41 +43,56 @@ export interface IUnit {
 }
 
 export const Map = ({ context }: IMapProps) => {
-  const {player, map, updatePlayerLocation, path, setPath} = useStore()
+  const { player, map, updatePlayerLocation, path, setPath } = useStore();
 
   const getMap = () => {
-  const toReturn: IUnit[] = []
+    const toReturn: IUnit[] = [];
 
     map.forEach((row, y) =>
       row.forEach((field, x) => {
         const fill = getFieldColor(field.type);
 
         if (isPlayerField({ x, y }, player)) {
-          return toReturn.push({x, y, height: context.unit, width: context.unit, fill: 'red'})
+          return toReturn.push({ x, y, height: context.unit, width: context.unit, fill: 'red' });
         }
 
         if (isObstacleField(field)) {
-          return toReturn.push({x, y, height: context.unit, width: context.unit, fill, stroke: 'white'})
+          return toReturn.push({ x, y, height: context.unit, width: context.unit, fill, stroke: 'white' });
         }
         // TODO - improve path rendering.
         if (isPathField(path, x, y)) {
-          return toReturn.push({x, y, height: context.unit, width: context.unit, fill: '#99D17B'})
+          return toReturn.push({ x, y, height: context.unit, width: context.unit, fill: '#99D17B' });
         }
 
-        return toReturn.push({x, y, height: context.unit, width: context.unit, fill })
-      }))
+        return toReturn.push({ x, y, height: context.unit, width: context.unit, fill });
+      }),
+    );
 
-      return toReturn
-  }
+    return toReturn;
+  };
 
-  return <>{getMap().map(({x,y, ...props}) => <Unit {...props} x={x * context.unit} y={y * context.unit} onUnitClick={() => {
-    const shortestPath = pipe(new ShortestPath(toAdjacencyList(map)).get(coordinatesToString(player.location), coordinatesToString({x,y})), cutHead)
+  return (
+    <>
+      {getMap().map(({ x, y, ...props }) => (
+        <Unit
+          key={`unit-${x},${y}`}
+          {...props}
+          x={x * context.unit}
+          y={y * context.unit}
+          onUnitClick={() => {
+            const shortestPath = pipe(new ShortestPath(toAdjacencyList(map)).get(coordinatesToString(player.location), coordinatesToString({ x, y })), cutHead);
 
-    setPath(shortestPath.map((path) => {
-      const [pathX, pathY] = getCoordinates(path);
-      return {x: Number(pathX), y: Number(pathY)}
-    }))
+            setPath(
+              shortestPath.map((path) => {
+                const [pathX, pathY] = getCoordinates(path);
+                return { x: Number(pathX), y: Number(pathY) };
+              }),
+            );
 
-    updatePlayerLocation({x, y})
-  }} />)}</>
+            updatePlayerLocation({ x, y });
+          }}
+        />
+      ))}
+    </>
+  );
 };

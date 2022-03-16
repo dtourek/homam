@@ -1,7 +1,10 @@
-import {FieldType} from "./store/utils";
+import { FieldType } from './store/utils';
 
-export type WorldMap = IField[][]
-export interface ILocation { x: number; y: number };
+export type WorldMap = IField[][];
+export interface ILocation {
+  x: number;
+  y: number;
+}
 export interface IPlayer {
   location: ILocation;
 }
