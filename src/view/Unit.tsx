@@ -1,8 +1,8 @@
 import React from 'react';
-import { IUnit } from './Map';
+import { IFieldObj } from './Map';
 import { MouseEvent } from 'react';
 
-interface IProps extends IUnit {
+interface IProps extends IFieldObj {
   onUnitClick: (event: MouseEvent) => void;
 }
 

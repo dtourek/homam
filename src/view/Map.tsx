@@ -1,11 +1,27 @@
 import React from 'react';
 import { Unit } from './Unit';
-import { IContext } from '../App';
-import { coordinatesToString, getCoordinates, ShortestPath, toAdjacencyList } from '../store/shortestPath';
+import { IConfig, IField } from '../interfaces';
+import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList, IRawPath } from '../store/shortestPath';
 import { FieldType, isObstacleField, isPathField, isPlayerField } from '../store/utils';
 import { pipe } from 'fputils';
 import { cutHead } from '../tools';
-import { useStore } from '../store/useStore';
+import { IStore } from '../store/useStore';
+
+interface IMapProps {
+  config: IConfig;
+  store: IStore;
+}
+
+export interface IFieldObj {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  fill: string;
+  stroke?: string;
+}
+
+const cutHeadPath = (raw: IRawPath): IRawPath => ({ ...raw, path: cutHead(raw.path) });
 
 // https://coolors.co/020c16-1c1c1d-092c0f-789d99-e7e4a5-c2f3d6-c6b897
 const getFieldColor = (type: FieldType): string => {
@@ -29,69 +45,65 @@ const getFieldColor = (type: FieldType): string => {
   }
 };
 
-interface IMapProps {
-  context: IContext;
-}
-
-export interface IUnit {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  fill: string;
-  stroke?: string;
-}
-
-export const Map = ({ context }: IMapProps) => {
-  const { player, map, updatePlayerLocation, path, setPath } = useStore();
-
-  const getMap = () => {
-    const toReturn: IUnit[] = [];
+export const Map = ({ config: { unit }, store: { map, player, updatePlayerLocation, path, setPath, setPathWeight } }: IMapProps) => {
+  const getMap = (): IFieldObj[] => {
+    const fields: IFieldObj[] = [];
 
     map.forEach((row, y) =>
       row.forEach((field, x) => {
         const fill = getFieldColor(field.type);
 
         if (isPlayerField({ x, y }, player)) {
-          return toReturn.push({ x, y, height: context.unit, width: context.unit, fill: 'red' });
+          return fields.push({ x, y, height: unit, width: unit, fill: 'red' });
         }
 
         if (isObstacleField(field)) {
-          return toReturn.push({ x, y, height: context.unit, width: context.unit, fill, stroke: 'white' });
-        }
-        // TODO - improve path rendering.
-        if (isPathField(path, x, y)) {
-          return toReturn.push({ x, y, height: context.unit, width: context.unit, fill: '#99D17B' });
+          return fields.push({ x, y, height: unit, width: unit, fill, stroke: 'white' });
         }
 
-        return toReturn.push({ x, y, height: context.unit, width: context.unit, fill });
+        if (isPathField(path, x, y)) {
+          return fields.push({ x, y, height: unit, width: unit, fill: '#99D17B' });
+        }
+
+        return fields.push({ x, y, height: unit, width: unit, fill });
       }),
     );
 
-    return toReturn;
+    return fields;
+  };
+
+  const getPlayerTargetLocation = (raw: IRawPath): string => {
+    if (raw.path.length < player.remainingMovement) {
+      return raw.path[raw.path.length - 1];
+    }
+    return raw.path[player.remainingMovement - 1];
+  };
+
+  const updatePlayer = ([x, y]: string[]): void => updatePlayerLocation({ x: Number(x), y: Number(y) });
+
+  const setState = (raw: IRawPath): void => {
+    setPathWeight(raw.weight);
+    setPath(
+      raw.path.map((step) => {
+        const [stepX, stepY] = getStepCoordinates(step);
+        return { x: Number(stepX), y: Number(stepY) };
+      }),
+    );
+
+    pipe(getPlayerTargetLocation(raw), getStepCoordinates, updatePlayer);
+  };
+
+  const calculatePath = ({ start, end }: { start: string; end: string }): IRawPath => new ShortestPath(toAdjacencyList(map)).get(start, end);
+
+  const handleClick = (x: number, y: number): void => {
+    const edges = { start: coordinatesToString(player.location), end: coordinatesToString({ x, y }) };
+    pipe(edges, calculatePath, cutHeadPath, setState);
   };
 
   return (
     <>
       {getMap().map(({ x, y, ...props }) => (
-        <Unit
-          key={`unit-${x},${y}`}
-          {...props}
-          x={x * context.unit}
-          y={y * context.unit}
-          onUnitClick={() => {
-            const shortestPath = pipe(new ShortestPath(toAdjacencyList(map)).get(coordinatesToString(player.location), coordinatesToString({ x, y })), cutHead);
-
-            setPath(
-              shortestPath.map((path) => {
-                const [pathX, pathY] = getCoordinates(path);
-                return { x: Number(pathX), y: Number(pathY) };
-              }),
-            );
-
-            updatePlayerLocation({ x, y });
-          }}
-        />
+        <Unit key={`unit-${x},${y}`} {...props} x={x * unit} y={y * unit} onUnitClick={() => handleClick(x, y)} />
       ))}
     </>
   );

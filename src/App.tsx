@@ -1,12 +1,8 @@
 import React from 'react';
 import { Main } from './view/Main';
+import { IConfig } from './interfaces';
 
-export interface IContext {
-  unit: number;
-  mapMaxSize: number;
-}
-
-const context: IContext = {
+const config: IConfig = {
   unit: 20,
   mapMaxSize: 1000,
 };
@@ -15,7 +11,7 @@ const App = () => {
   return (
     <div>
       <h1>Heroes</h1>
-      <Main context={context} />
+      <Main config={config} />
     </div>
   );
 };
