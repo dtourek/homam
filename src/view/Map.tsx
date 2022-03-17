@@ -1,6 +1,6 @@
 import React from 'react';
 import { Unit } from './Unit';
-import { IConfig } from '../App';
+import { IConfig, IField } from '../interfaces';
 import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList, IRawPath } from '../store/shortestPath';
 import { FieldType, isObstacleField, isPathField, isPlayerField } from '../store/utils';
 import { pipe } from 'fputils';
@@ -46,7 +46,7 @@ const getFieldColor = (type: FieldType): string => {
 };
 
 export const Map = ({ config: { unit }, store: { map, player, updatePlayerLocation, path, setPath, setPathWeight } }: IMapProps) => {
-  const getMap = () => {
+  const getMap = (): IFieldObj[] => {
     const fields: IFieldObj[] = [];
 
     map.forEach((row, y) =>
@@ -79,7 +79,7 @@ export const Map = ({ config: { unit }, store: { map, player, updatePlayerLocati
     return raw.path[player.remainingMovement - 1];
   };
 
-  const updatePlayer = ([x, y]: string[]) => updatePlayerLocation({ x: Number(x), y: Number(y) });
+  const updatePlayer = ([x, y]: string[]): void => updatePlayerLocation({ x: Number(x), y: Number(y) });
 
   const setState = (raw: IRawPath): void => {
     setPathWeight(raw.weight);
@@ -93,11 +93,11 @@ export const Map = ({ config: { unit }, store: { map, player, updatePlayerLocati
     pipe(getPlayerTargetLocation(raw), getStepCoordinates, updatePlayer);
   };
 
-  const calculatePath = ({ start, end }: { start: string; end: string }) => new ShortestPath(toAdjacencyList(map)).get(start, end);
+  const calculatePath = ({ start, end }: { start: string; end: string }): IRawPath => new ShortestPath(toAdjacencyList(map)).get(start, end);
 
-  const handleClick = (x: number, y: number) => {
+  const handleClick = (x: number, y: number): void => {
     const edges = { start: coordinatesToString(player.location), end: coordinatesToString({ x, y }) };
-    return pipe(edges, calculatePath, cutHeadPath, setState);
+    pipe(edges, calculatePath, cutHeadPath, setState);
   };
 
   return (

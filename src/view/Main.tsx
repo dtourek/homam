@@ -1,6 +1,6 @@
 import React from 'react';
 import { Map } from './Map';
-import { IConfig } from '../App';
+import { IConfig } from '../interfaces';
 import { useStore } from '../store/useStore';
 
 interface IMain {

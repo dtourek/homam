@@ -1,10 +1,6 @@
 import React from 'react';
 import { Main } from './view/Main';
-
-export interface IConfig {
-  unit: number;
-  mapMaxSize: number;
-}
+import { IConfig } from './interfaces';
 
 const config: IConfig = {
   unit: 20,
