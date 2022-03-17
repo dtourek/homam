@@ -6,6 +6,7 @@ export interface ILocation {
   y: number;
 }
 export interface IPlayer {
+  remainingMovement: number;
   location: ILocation;
 }
 export interface IField {

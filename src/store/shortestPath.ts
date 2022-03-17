@@ -26,11 +26,16 @@ interface IDistances {
   [key: string]: number;
 }
 
+export interface IRawPath {
+  path: string[];
+  weight: number;
+}
+
 const isEmptyObject = (object: object): boolean => Object.keys(object).length === 0;
 const isNotUndefined = <T>(value: T | undefined): value is T => value !== undefined;
 const filter = <T>(array: Array<T | undefined>): T[] => array.filter(isNotUndefined);
 export const coordinatesToString = (location: ILocation): string => `${location.x},${location.y}`;
-export const getCoordinates = (coordinates: string): string[] => coordinates.split(',');
+export const getStepCoordinates = (step: string): string[] => step.split(',');
 
 const getFieldWeight = (field: IField): number | undefined => {
   switch (field.type) {
@@ -130,15 +135,16 @@ export class ShortestPath {
     }, {});
   }
 
-  get(startVertex: string, finishVertex: string) {
-    if (isEmptyObject(this.adjacencyList)) return [];
+  get(startVertex: string, finishVertex: string): IRawPath {
+    if (isEmptyObject(this.adjacencyList)) return { path: [], weight: 0 };
 
-    if (!this.adjacencyList[startVertex] || !this.adjacencyList[finishVertex]) return [];
+    if (!this.adjacencyList[startVertex] || !this.adjacencyList[finishVertex]) return { path: [], weight: 0 };
 
     const nodes = queue();
     const previous: IPrevious = {};
     let smallest: any; // TODO - string | undefined
     const path: string[] = [];
+    let pathWeight = 0;
 
     // build initial state
     const distances: IDistances = this.init(previous, nodes, startVertex);
@@ -151,6 +157,7 @@ export class ShortestPath {
         while (previous[smallest]) {
           path.push(smallest);
           smallest = previous[smallest];
+          pathWeight = distances[path[0]];
         }
         break;
       }
@@ -176,6 +183,6 @@ export class ShortestPath {
       }
     }
 
-    return path.concat(smallest).reverse();
+    return { path: path.concat(smallest).reverse(), weight: pathWeight };
   }
 }
