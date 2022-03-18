@@ -1,6 +1,6 @@
 import React from 'react';
 import { Unit } from './Unit';
-import { IConfig, IField } from '../interfaces';
+import { IConfig } from '../interfaces';
 import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList, IRawPath } from '../store/shortestPath';
 import { FieldType, isObstacleField, isPathField, isPlayerField } from '../store/utils';
 import { pipe } from 'fputils';
