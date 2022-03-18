@@ -99,7 +99,7 @@ describe('shortestPath', () => {
     it('should not find path when empty path sent', () => {
       const graph = new ShortestPath({});
 
-      expect(graph.get('A', 'E')).toEqual([]);
+      expect(graph.get('A', 'E')).toEqual({ path: [], weight: 0 });
     });
 
     it('should not find path when trying to find path on non existent nodes', () => {
@@ -108,9 +108,9 @@ describe('shortestPath', () => {
         B: [{ node: 'B', weight: 4 }],
       });
 
-      expect(graph.get('A', 'X')).toEqual([]);
-      expect(graph.get('X', 'B')).toEqual([]);
-      expect(graph.get('X', 'Y')).toEqual([]);
+      expect(graph.get('A', 'X')).toEqual({ path: [], weight: 0 });
+      expect(graph.get('X', 'B')).toEqual({ path: [], weight: 0 });
+      expect(graph.get('X', 'Y')).toEqual({ path: [], weight: 0 });
     });
 
     it('should find shortest path', () => {
@@ -141,12 +141,12 @@ describe('shortestPath', () => {
           { node: 'D', weight: 1 },
         ],
       };
-      expect(new ShortestPath(adjacencyList).get('A', 'E')).toEqual(['A', 'C', 'D', 'F', 'E']);
+      expect(new ShortestPath(adjacencyList).get('A', 'E')).toEqual({ path: ['A', 'C', 'D', 'F', 'E'], weight: 6 });
     });
 
     it('should find shortest path on transformed map to adjacency list', () => {
       const list = toAdjacencyList(mapMock);
-      expect(new ShortestPath(list).get('0,0', '2,2')).toEqual(['0,0', '1,1', '2,2']);
+      expect(new ShortestPath(list).get('0,0', '2,2')).toEqual({ path: ['0,0', '1,1', '2,2'], weight: 3 });
     });
 
     it('should find shortest path on big map', () => {
@@ -158,7 +158,10 @@ describe('shortestPath', () => {
         [{ type: FieldType.grass }, { type: FieldType.grass }, { type: FieldType.grass }, { type: FieldType.mountain }, { type: FieldType.grass }],
       ];
 
-      expect(new ShortestPath(toAdjacencyList(map)).get('0,0', '4,4')).toEqual(['0,0', '0,1', '0,2', '0,3', '1,4', '2,3', '2,2', '2,1', '3,0', '4,1', '4,2', '4,3', '4,4']);
+      expect(new ShortestPath(toAdjacencyList(map)).get('0,0', '4,4')).toEqual({
+        path: ['0,0', '0,1', '0,2', '0,3', '1,4', '2,3', '2,2', '2,1', '3,0', '4,1', '4,2', '4,3', '4,4'],
+        weight: 12,
+      });
     });
   });
 });
