@@ -25,7 +25,7 @@ export interface IFieldObj {
 
 const cutHeadPath = (raw: IRawPath): IRawPath => ({ ...raw, path: cutHead(raw.path) });
 
-// https://coolors.co/020c16-1c1c1d-092c0f-789d99-e7e4a5-c2f3d6-c6b897 sss
+// https://coolors.co/020c16-1c1c1d-092c0f-789d99-e7e4a5-c2f3d6-c6b897
 const getFieldColor = (type: FieldType): string => {
   switch (type) {
     case FieldType.mud:
