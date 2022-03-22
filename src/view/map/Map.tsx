@@ -2,16 +2,17 @@ import React from 'react';
 import { Field } from './Field';
 import { IConfig, ILocation, IPlayer, WorldMap } from '../../interfaces';
 import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList, IRawPath } from '../../store/shortestPath';
-import { FieldType, isObstacleField, isPathField, isPlayerField } from '../../store/utils';
+import { FieldType, isObstacleField } from '../../store/utils';
 import { pipe } from 'fputils';
 import { cutHead } from '../../tools';
+import { IPath } from '../../store/usePath';
 
 interface IMapProps {
   config: IConfig;
   player: IPlayer;
   updatePlayer: (player: IPlayer, map: WorldMap) => void;
-  path: ILocation[];
-  setPath: (path: ILocation[]) => void;
+  path: IPath[];
+  setPath: (path: IPath[]) => void;
 }
 
 export interface IFieldObj {
@@ -23,6 +24,8 @@ export interface IFieldObj {
   stroke?: string;
 }
 
+const isPlayerField = (location: ILocation, player: IPlayer): boolean => location.x === player.location.x && location.y === player.location.y;
+const pathFieldIndex = (path: IPath[], x: number, y: number): IPath | undefined => path.find(({ location }) => location.x === x && location.y === y);
 const cutHeadPath = (raw: IRawPath): IRawPath => ({ ...raw, path: cutHead(raw.path) });
 
 // https://coolors.co/020c16-1c1c1d-092c0f-789d99-e7e4a5-c2f3d6-c6b897
@@ -63,8 +66,9 @@ export const Map = ({ config: { unit, map, mapMaxSize }, player, updatePlayer, p
           return fields.push({ x, y, height: unit, width: unit, fill, stroke: 'white' });
         }
 
-        if (isPathField(path, x, y)) {
-          return fields.push({ x, y, height: unit, width: unit, fill: '#99D17B' });
+        const pathField = pathFieldIndex(path, x, y);
+        if (pathField) {
+          return fields.push({ x, y, height: unit, width: unit, fill: pathField.reachable ? '#99D17B' : '#F7E67D' });
         }
 
         return fields.push({ x, y, height: unit, width: unit, fill });
@@ -86,9 +90,9 @@ export const Map = ({ config: { unit, map, mapMaxSize }, player, updatePlayer, p
   const setState = (raw: IRawPath): void => {
     if (player.remainingMovement > 0) {
       setPath(
-        raw.path.map((step) => {
+        raw.path.map((step, index) => {
           const [stepX, stepY] = getStepCoordinates(step);
-          return { x: Number(stepX), y: Number(stepY) };
+          return { location: { x: Number(stepX), y: Number(stepY) }, reachable: index < player.remainingMovement };
         }),
       );
 

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Map } from './map/Map';
-import { IConfig, ILocation } from '../interfaces';
+import { IConfig } from '../interfaces';
 import { useStore } from '../store/useStore';
 import { usePlayer } from '../store/usePlayer';
+import { usePath } from '../store/usePath';
 
 interface IMain {
   config: IConfig;
@@ -11,12 +12,12 @@ interface IMain {
 export const Main = ({ config }: IMain) => {
   const { day, increaseDay } = useStore();
   const { resetMovement, player, updatePlayer } = usePlayer(config.playerMove);
-  const [path, setPath] = useState<ILocation[]>([]);
+  const { path, setPath, resetPath } = usePath();
 
   const endTurn = () => {
     increaseDay();
     resetMovement();
-    setPath([]);
+    resetPath(player, config.playerMove);
   };
 
   return (
