@@ -10,14 +10,13 @@ export interface IPath {
 export const usePath = () => {
   const [path, setPath] = useState<IPath[]>([]);
 
-  const cutVisitedFields = (playerMoves: number) => path.filter((pathField, index) => index >= playerMoves);
+  const cutVisitedFields = (playerMoves: number): IPath[] => path.filter((pathField, index) => index >= playerMoves);
   const updateFields =
-    (maxPlayerMovement: number) =>
+    (defaultMovement: number) =>
     (path: IPath[]): void =>
-      setPath(path.map((pathField, index) => (index < maxPlayerMovement ? { ...pathField, reachable: true } : pathField)));
+      setPath(path.map((pathField, index) => (index < defaultMovement ? { ...pathField, reachable: true } : pathField)));
 
-  const resetPath = ({ remainingMovement }: IPlayer, maxPlayerMovement: number): void =>
-    pipe(maxPlayerMovement - remainingMovement, cutVisitedFields, updateFields(maxPlayerMovement));
+  const resetPath = ({ remainingMovement }: IPlayer, defaultMovement: number): void => pipe(defaultMovement - remainingMovement, cutVisitedFields, updateFields(defaultMovement));
 
   return { path, setPath, resetPath };
 };
