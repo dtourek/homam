@@ -7,6 +7,7 @@ module.exports = {
     node: true, // Defines things like process.env when generating through node
   },
   extends: [
+    'react-app',
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended',
@@ -33,7 +34,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 1,
     '@typescript-eslint/ban-types': [1, { types: { object: false } }],
     'prettier/prettier': [
-      'error',
+      'warn',
       {
         printWidth: 180,
         trailingComma: 'all',

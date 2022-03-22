@@ -1,15 +1,17 @@
 import React from 'react';
-import { Unit } from './Unit';
-import { IConfig } from '../interfaces';
-import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList, IRawPath } from '../store/shortestPath';
-import { FieldType, isObstacleField, isPathField, isPlayerField } from '../store/utils';
+import { Field } from './Field';
+import { IConfig, ILocation, IPlayer, WorldMap } from '../../interfaces';
+import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList, IRawPath } from '../../store/shortestPath';
+import { FieldType, isObstacleField, isPathField, isPlayerField } from '../../store/utils';
 import { pipe } from 'fputils';
-import { cutHead } from '../tools';
-import { IStore } from '../store/useStore';
+import { cutHead } from '../../tools';
 
 interface IMapProps {
   config: IConfig;
-  store: IStore;
+  player: IPlayer;
+  updatePlayer: (player: IPlayer, map: WorldMap) => void;
+  path: ILocation[];
+  setPath: (path: ILocation[]) => void;
 }
 
 export interface IFieldObj {
@@ -45,8 +47,8 @@ const getFieldColor = (type: FieldType): string => {
   }
 };
 
-export const Map = ({ config: { unit }, store: { map, player, updatePlayerLocation, path, setPath, setPathWeight } }: IMapProps) => {
-  const getMap = (): IFieldObj[] => {
+export const Map = ({ config: { unit, map, mapMaxSize }, player, updatePlayer, path, setPath }: IMapProps) => {
+  const getFields = (): IFieldObj[] => {
     const fields: IFieldObj[] = [];
 
     map.forEach((row, y) =>
@@ -79,32 +81,39 @@ export const Map = ({ config: { unit }, store: { map, player, updatePlayerLocati
     return raw.path[player.remainingMovement - 1];
   };
 
-  const updatePlayer = ([x, y]: string[]): void => updatePlayerLocation({ x: Number(x), y: Number(y) });
+  const playerLocation = ([x, y]: string[]) => ({ x: Number(x), y: Number(y) });
 
   const setState = (raw: IRawPath): void => {
-    setPathWeight(raw.weight);
-    setPath(
-      raw.path.map((step) => {
-        const [stepX, stepY] = getStepCoordinates(step);
-        return { x: Number(stepX), y: Number(stepY) };
-      }),
-    );
+    if (player.remainingMovement > 0) {
+      setPath(
+        raw.path.map((step) => {
+          const [stepX, stepY] = getStepCoordinates(step);
+          return { x: Number(stepX), y: Number(stepY) };
+        }),
+      );
 
-    pipe(getPlayerTargetLocation(raw), getStepCoordinates, updatePlayer);
+      const location = pipe(getPlayerTargetLocation(raw), getStepCoordinates, playerLocation);
+
+      if (player.remainingMovement - raw.weight >= 0) {
+        updatePlayer({ location, remainingMovement: player.remainingMovement - raw.weight }, map);
+      } else {
+        updatePlayer({ location, remainingMovement: 0 }, map);
+      }
+    }
   };
 
-  const calculatePath = ({ start, end }: { start: string; end: string }): IRawPath => new ShortestPath(toAdjacencyList(map)).get(start, end);
+  const getShortestPath = ({ start, end }: { start: string; end: string }): IRawPath => new ShortestPath(toAdjacencyList(map)).get(start, end);
 
   const handleClick = (x: number, y: number): void => {
     const edges = { start: coordinatesToString(player.location), end: coordinatesToString({ x, y }) };
-    pipe(edges, calculatePath, cutHeadPath, setState);
+    pipe(edges, getShortestPath, cutHeadPath, setState);
   };
 
   return (
-    <>
-      {getMap().map(({ x, y, ...props }) => (
-        <Unit key={`unit-${x},${y}`} {...props} x={x * unit} y={y * unit} onUnitClick={() => handleClick(x, y)} />
+    <svg xmlns="http://www.w3.org/2000/svg" height={mapMaxSize} width={mapMaxSize}>
+      {getFields().map(({ x, y, ...props }) => (
+        <Field key={`unit-${x},${y}`} {...props} x={x * unit} y={y * unit} onClick={() => handleClick(x, y)} />
       ))}
-    </>
+    </svg>
   );
 };
