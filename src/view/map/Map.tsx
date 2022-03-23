@@ -4,7 +4,7 @@ import { IConfig, ILocation, IPlayer, WorldMap } from '../../interfaces';
 import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList, IRawPath } from '../../store/shortestPath';
 import { FieldType, isObstacleField } from '../../store/utils';
 import { pipe } from 'fputils';
-import { cutHead } from '../../tools';
+import { cutHead, tail } from '../../tools';
 import { IPath } from '../../store/usePath';
 
 interface IMapProps {
@@ -104,7 +104,7 @@ export const Map = ({ config: { unit, map, mapMaxSize }, player, updatePlayer, p
         }),
       );
 
-      if (pathFieldsEquals(raw.path[raw.path.length - 1], path[path.length - 1])) {
+      if (pathFieldsEquals(tail(raw.path), tail(path))) {
         const location = pipe(getPlayerTargetLocation(raw), getStepCoordinates, playerLocation);
         updatePlayerLocation(location, getRemainingMovement(player, raw));
       }
