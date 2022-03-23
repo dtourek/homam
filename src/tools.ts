@@ -3,3 +3,5 @@ export const cutHead = <T>(array: T[]): T[] => {
   const [, ...rest] = array;
   return rest;
 };
+
+export const tail = <T>(array: T[]): T => array[array.length - 1];

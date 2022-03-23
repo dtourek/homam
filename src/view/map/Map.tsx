@@ -4,7 +4,7 @@ import { IConfig, ILocation, IPlayer, WorldMap } from '../../interfaces';
 import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList, IRawPath } from '../../store/shortestPath';
 import { FieldType, isObstacleField } from '../../store/utils';
 import { pipe } from 'fputils';
-import { cutHead } from '../../tools';
+import { cutHead, tail } from '../../tools';
 import { IPath } from '../../store/usePath';
 
 interface IMapProps {
@@ -27,6 +27,12 @@ export interface IFieldObj {
 const isPlayerField = (location: ILocation, player: IPlayer): boolean => location.x === player.location.x && location.y === player.location.y;
 const pathFieldIndex = (path: IPath[], x: number, y: number): IPath | undefined => path.find(({ location }) => location.x === x && location.y === y);
 const cutHeadPath = (raw: IRawPath): IRawPath => ({ ...raw, path: cutHead(raw.path) });
+const pathFieldsEquals = (rawField: string, field: IPath): boolean => {
+  const [fieldX, fieldY] = getStepCoordinates(rawField);
+  return Number(fieldX) === field.location.x && Number(fieldY) === field.location.y;
+};
+
+const getRemainingMovement = (player: IPlayer, raw: IRawPath): number => (player.remainingMovement - raw.weight >= 0 ? player.remainingMovement - raw.weight : 0);
 
 // https://coolors.co/020c16-1c1c1d-092c0f-789d99-e7e4a5-c2f3d6-c6b897
 const getFieldColor = (type: FieldType): string => {
@@ -87,6 +93,8 @@ export const Map = ({ config: { unit, map, mapMaxSize }, player, updatePlayer, p
 
   const playerLocation = ([x, y]: string[]) => ({ x: Number(x), y: Number(y) });
 
+  const updatePlayerLocation = (location: ILocation, remainingMovement: number): void => updatePlayer({ location, remainingMovement }, map);
+
   const setState = (raw: IRawPath): void => {
     if (player.remainingMovement > 0) {
       setPath(
@@ -96,12 +104,9 @@ export const Map = ({ config: { unit, map, mapMaxSize }, player, updatePlayer, p
         }),
       );
 
-      const location = pipe(getPlayerTargetLocation(raw), getStepCoordinates, playerLocation);
-
-      if (player.remainingMovement - raw.weight >= 0) {
-        updatePlayer({ location, remainingMovement: player.remainingMovement - raw.weight }, map);
-      } else {
-        updatePlayer({ location, remainingMovement: 0 }, map);
+      if (pathFieldsEquals(tail(raw.path), tail(path))) {
+        const location = pipe(getPlayerTargetLocation(raw), getStepCoordinates, playerLocation);
+        updatePlayerLocation(location, getRemainingMovement(player, raw));
       }
     }
   };
