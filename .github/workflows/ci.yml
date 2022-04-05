@@ -8,7 +8,10 @@ jobs:
     
     - name: Install modules
       run: yarn
-    
+
+    - name: Lint
+      run: yarn lint
+
     - name: Run build
       run: yarn build
     
