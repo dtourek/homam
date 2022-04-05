@@ -1,16 +1,17 @@
 import React from 'react';
 import { Field } from './Field';
-import { IConfig, ILocation, IPlayer, WorldMap } from '../../interfaces';
+import { IConfig, ILocation, IPlayer } from '../../interfaces';
 import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList, IRawPath } from '../../store/shortestPath';
 import { FieldType, isObstacleField } from '../../store/utils';
 import { pipe } from 'fputils';
 import { cutHead, tail } from '../../tools';
 import { IPath } from '../../store/usePath';
+import { IUserPlayer } from '../../store/player/usePlayer';
 
 interface IMapProps {
   config: IConfig;
   player: IPlayer;
-  updatePlayer: (player: IPlayer, map: WorldMap) => void;
+  movePlayer: IUserPlayer['movePlayer'];
   path: IPath[];
   setPath: (path: IPath[]) => void;
 }
@@ -56,7 +57,7 @@ const getFieldColor = (type: FieldType): string => {
   }
 };
 
-export const Map = ({ config: { unit, map, mapMaxSize }, player, updatePlayer, path, setPath }: IMapProps) => {
+export const Map = ({ config: { unit, map, mapMaxSize }, player, movePlayer, path, setPath }: IMapProps) => {
   const getFields = (): IFieldObj[] => {
     const fields: IFieldObj[] = [];
 
@@ -93,8 +94,6 @@ export const Map = ({ config: { unit, map, mapMaxSize }, player, updatePlayer, p
 
   const playerLocation = ([x, y]: string[]) => ({ x: Number(x), y: Number(y) });
 
-  const updatePlayerLocation = (location: ILocation, remainingMovement: number): void => updatePlayer({ location, remainingMovement }, map);
-
   const setState = (raw: IRawPath): void => {
     if (player.remainingMovement > 0) {
       setPath(
@@ -106,7 +105,7 @@ export const Map = ({ config: { unit, map, mapMaxSize }, player, updatePlayer, p
 
       if (pathFieldsEquals(tail(raw.path), tail(path))) {
         const location = pipe(getPlayerTargetLocation(raw), getStepCoordinates, playerLocation);
-        updatePlayerLocation(location, getRemainingMovement(player, raw));
+        movePlayer(location, getRemainingMovement(player, raw), map);
       }
     }
   };
