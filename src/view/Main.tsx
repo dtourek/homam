@@ -12,14 +12,13 @@ interface IMain {
 
 export const Main = ({ config }: IMain) => {
   const { day, increaseDay } = useStore();
-  const { resetMovement, player, movePlayer, increaseResources } = usePlayer(config.playerMove);
+  const { player, movePlayer, onEndTurn } = usePlayer(config.playerMove);
   const { path, setPath, resetPath } = usePath();
 
   const endTurn = () => {
     increaseDay();
-    resetMovement();
     resetPath(player, config.playerMove);
-    increaseResources({ gold: 1000, rock: 10, wood: 5 });
+    onEndTurn({ gold: 1000, rock: 10, wood: 5 });
   };
 
   return (

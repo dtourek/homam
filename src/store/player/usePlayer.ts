@@ -17,17 +17,14 @@ export const usePlayer = (defaultMovement: number) => {
     }
   };
 
-  const updateRemainingMovement = (remainingMovement: number) => setPlayer({ ...player, remainingMovement });
-  const resetMovement = () => updateRemainingMovement(defaultMovement);
-
-  const increaseResources = (resources?: Partial<IResources>) => {
+  const onEndTurn = (resources?: Partial<IResources>) => {
     const updated: IResources = resources
       ? Object.keys(resources).reduce((acc, key) => {
           return { ...acc, [key]: acc[key] + resources[key] };
         }, player.resources)
       : player.resources;
 
-    setPlayer({ ...player, resources: updated });
+    setPlayer({ ...player, resources: updated, remainingMovement: defaultMovement });
   };
-  return { player, setPlayer, resetMovement, updateRemainingMovement, movePlayer, increaseResources };
+  return { player, setPlayer, movePlayer, onEndTurn };
 };
