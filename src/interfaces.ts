@@ -14,9 +14,16 @@ export interface ILocation {
   y: number;
 }
 
+export interface IResources {
+  gold: number;
+  rock: number;
+  wood: number;
+}
+
 export interface IPlayer {
   remainingMovement: number;
   location: ILocation;
+  resources: IResources;
 }
 
 export interface IField {

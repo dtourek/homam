@@ -3,7 +3,7 @@ import { FieldType } from './store/utils';
 
 export const getField = (type: FieldType): IField => ({ type });
 
-export const initPlayer: IPlayer = { location: { x: 1, y: 1 }, remainingMovement: 5 };
+export const initPlayer: IPlayer = { location: { x: 1, y: 1 }, remainingMovement: 5, resources: { gold: 10000, wood: 50, rock: 50 } };
 
 export const initWorldMap: WorldMap = [
   [
