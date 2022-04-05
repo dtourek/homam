@@ -29,7 +29,7 @@ const pathFieldIndex = (path: IPath[], x: number, y: number): IPath | undefined 
 const cutHeadPath = (raw: IRawPath): IRawPath => ({ ...raw, path: cutHead(raw.path) });
 const pathFieldsEquals = (rawField: string, field: IPath): boolean => {
   const [fieldX, fieldY] = getStepCoordinates(rawField);
-  return Number(fieldX) === field.location.x && Number(fieldY) === field.location.y;
+  return Number(fieldX) === field?.location.x && Number(fieldY) === field?.location.y;
 };
 
 const getRemainingMovement = (player: IPlayer, raw: IRawPath): number => (player.remainingMovement - raw.weight >= 0 ? player.remainingMovement - raw.weight : 0);
