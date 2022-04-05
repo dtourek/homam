@@ -26,5 +26,5 @@ export const usePlayer = (defaultMovement: number) => {
 
     setPlayer({ ...player, resources: updated, remainingMovement: defaultMovement });
   };
-  return { player, setPlayer, movePlayer, onEndTurn };
+  return { player, movePlayer, onEndTurn };
 };
