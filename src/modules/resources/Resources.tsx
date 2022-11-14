@@ -1,5 +1,5 @@
 import React from 'react';
-import { IResources } from '../../interfaces';
+import { IResources } from './interfaces';
 
 interface IResourcesProps {
   resources: IResources;

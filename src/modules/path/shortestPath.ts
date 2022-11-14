@@ -1,15 +1,11 @@
-import { IField, ILocation, WorldMap } from '../interfaces';
-import { FieldType, isObstacleField } from './utils';
+import { ILocation } from '../player/interfaces';
+import { FieldType, IField, WorldMap } from '../map/interfaces';
+import { AdjacencyListEdge, IAdjacencyList, IRawPath } from './interfaces';
+import { isObstacleField } from '../map/utils';
 
 interface IQueueNode {
   value: string;
   weight: number;
-}
-
-type AdjacencyListEdge = { node: string; weight: number };
-
-export interface IAdjacencyList {
-  [key: string]: AdjacencyListEdge[];
 }
 
 interface IQueue {
@@ -24,11 +20,6 @@ interface IPrevious {
 
 interface IDistances {
   [key: string]: number;
-}
-
-export interface IRawPath {
-  path: string[];
-  weight: number;
 }
 
 const isEmptyObject = (object: object): boolean => Object.keys(object).length === 0;

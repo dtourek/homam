@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ILocation, IPlayer } from '../interfaces';
-import { pipe } from 'fputils';
+import { ILocation, IPlayer } from '../player/interfaces';
+import { pipe } from 'tabor';
 
 export interface IPath {
   location: ILocation;
