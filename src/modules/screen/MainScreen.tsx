@@ -1,17 +1,17 @@
 import React from 'react';
-import { Map } from './map/Map';
-import { IConfig } from '../interfaces';
-import { useStore } from '../store/useStore';
-import { usePath } from '../store/usePath';
-import { Resources } from './resources/Resources';
-import { usePlayer } from '../store/player/usePlayer';
+import { IConfig } from '../../interfaces';
+import { usePath } from '../path/usePath';
+import { Resources } from '../resources/Resources';
+import { usePlayer } from '../player/usePlayer';
+import { useTime } from '../time/useTime';
+import { Map } from '../map/Map';
 
 interface IMain {
   config: IConfig;
 }
 
-export const Main = ({ config }: IMain) => {
-  const { day, increaseDay } = useStore();
+export const MainScreen = ({ config }: IMain) => {
+  const { day, increaseDay } = useTime();
   const { player, movePlayer, onEndTurn } = usePlayer(config.playerMove);
   const { path, setPath, resetPath } = usePath();
 

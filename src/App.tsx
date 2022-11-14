@@ -1,7 +1,7 @@
 import React from 'react';
-import { Main } from './view/Main';
 import { IConfig } from './interfaces';
 import { initWorldMap } from './init';
+import { MainScreen } from './modules/screen/MainScreen';
 
 const config: IConfig = {
   unit: 20,
@@ -14,7 +14,7 @@ const App = () => {
   return (
     <div>
       <h1>Heroes</h1>
-      <Main config={config} />
+      <MainScreen config={config} />
     </div>
   );
 };

@@ -5,7 +5,7 @@ export interface IStore {
   increaseDay: () => void;
 }
 
-export const useStore = (): IStore => {
+export const useTime = (): IStore => {
   const [day, setDay] = useState<number>(1);
 
   const increaseDay = (): void => setDay(day + 1);

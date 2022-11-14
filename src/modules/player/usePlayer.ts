@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { IField, ILocation, IPlayer, IResources, WorldMap } from '../../interfaces';
 import { initPlayer } from '../../init';
-import { isObstacleField } from '../utils';
+import { ILocation, IPlayer } from './interfaces';
+import { IField, WorldMap } from '../map/interfaces';
+import { IResources } from '../resources/interfaces';
+import { isObstacleField } from '../map/utils';
 
 export type IUserPlayer = ReturnType<typeof usePlayer>;
 

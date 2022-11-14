@@ -1,12 +1,15 @@
 import React from 'react';
 import { Field } from './Field';
-import { IConfig, ILocation, IPlayer } from '../../interfaces';
-import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList, IRawPath } from '../../store/shortestPath';
-import { FieldType, isObstacleField } from '../../store/utils';
-import { pipe } from 'fputils';
+import { IConfig } from '../../interfaces';
+import { IUserPlayer } from '../player/usePlayer';
+import { IPath } from '../path/usePath';
+import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList } from '../path/shortestPath';
 import { cutHead, tail } from '../../tools';
-import { IPath } from '../../store/usePath';
-import { IUserPlayer } from '../../store/player/usePlayer';
+import { FieldType } from './interfaces';
+import { isObstacleField } from './utils';
+import { pipe } from 'tabor';
+import { ILocation, IPlayer } from '../player/interfaces';
+import { IRawPath } from '../path/interfaces';
 
 interface IMapProps {
   config: IConfig;
