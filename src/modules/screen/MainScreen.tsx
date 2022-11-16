@@ -12,7 +12,7 @@ interface IMain {
 
 export const MainScreen = ({ config }: IMain) => {
   const { day, increaseDay } = useTime();
-  const { player, movePlayer, onEndTurn } = usePlayer(config.playerMove);
+  const { player, movePlayer, onEndTurn, increaseResource } = usePlayer(config.playerMove);
   const { path, setPath, resetPath } = usePath();
 
   const endTurn = () => {
@@ -28,7 +28,7 @@ export const MainScreen = ({ config }: IMain) => {
       <p>Days: {day}</p>
       <button onClick={endTurn}>End turn</button>
       <br />
-      <Map config={config} player={player} movePlayer={movePlayer} path={path} setPath={setPath} />
+      <Map config={config} player={player} movePlayer={movePlayer} path={path} setPath={setPath} increaseResource={increaseResource} />
     </>
   );
 };

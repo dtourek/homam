@@ -1,5 +1,6 @@
-import { IAdjacencyList, ShortestPath, toAdjacencyList } from '../shortestPath';
+import { ShortestPath, toAdjacencyList } from '../shortestPath';
 import { FieldType } from '../../map/interfaces';
+import { IAdjacencyList } from '../interfaces';
 
 describe('shortestPath', () => {
   const mapMock = [

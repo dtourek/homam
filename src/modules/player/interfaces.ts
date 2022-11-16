@@ -1,9 +1,9 @@
-import { IResources } from '../resources/interfaces';
+import { IPlayerResources } from '../resources/interfaces';
 
 export interface IPlayer {
   remainingMovement: number;
   location: ILocation;
-  resources: IResources;
+  resources: IPlayerResources;
 }
 
 export interface ILocation {
