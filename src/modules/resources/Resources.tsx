@@ -1,8 +1,8 @@
 import React from 'react';
-import { IResources } from './interfaces';
+import { IPlayerResources } from './interfaces';
 
 interface IResourcesProps {
-  resources: IResources;
+  resources: IPlayerResources;
 }
 
 export const Resources = ({ resources }: IResourcesProps) => {

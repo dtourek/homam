@@ -1,3 +1,5 @@
+import { IMapResource } from '../resources/interfaces';
+
 export enum FieldType {
   water = 'water',
   mountain = 'mountain',
@@ -10,6 +12,7 @@ export enum FieldType {
 
 export interface IField {
   type: FieldType;
+  resource?: IMapResource;
 }
 
 export type WorldMap = IField[][];

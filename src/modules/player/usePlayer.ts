@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { initPlayer } from '../../init';
 import { ILocation, IPlayer } from './interfaces';
 import { IField, WorldMap } from '../map/interfaces';
-import { IResources } from '../resources/interfaces';
+import { IMapResource, IPlayerResources } from '../resources/interfaces';
 import { isObstacleField } from '../map/utils';
 
 export type IUserPlayer = ReturnType<typeof usePlayer>;
@@ -12,15 +12,15 @@ const getField = (map: WorldMap, location: ILocation): IField | undefined => map
 export const usePlayer = (defaultMovement: number) => {
   const [player, setPlayer] = useState<IPlayer>(initPlayer);
 
-  const movePlayer = (location: IPlayer['location'], remainingMovement: IPlayer['remainingMovement'], map: WorldMap) => {
-    const field = getField(map, location);
+  const movePlayer = (targetLocation: IPlayer['location'], remainingMovement: IPlayer['remainingMovement'], map: WorldMap) => {
+    const field = getField(map, targetLocation);
     if (field && !isObstacleField(field)) {
-      return setPlayer({ ...player, location, remainingMovement });
+      return setPlayer({ ...player, location: targetLocation, remainingMovement });
     }
   };
 
-  const onEndTurn = (resources?: Partial<IResources>) => {
-    const updated: IResources = resources
+  const onEndTurn = (resources?: Partial<IPlayerResources>) => {
+    const updated: IPlayerResources = resources
       ? Object.keys(resources).reduce((acc, key) => {
           return { ...acc, [key]: acc[key] + resources[key] };
         }, player.resources)
@@ -28,5 +28,10 @@ export const usePlayer = (defaultMovement: number) => {
 
     setPlayer({ ...player, resources: updated, remainingMovement: defaultMovement });
   };
-  return { player, movePlayer, onEndTurn };
+
+  const increaseResource = (resource: IMapResource) => {
+    setPlayer({ ...player, resources: { ...player.resources, [resource.type]: player.resources[resource.type] + resource.amount } });
+  };
+
+  return { player, movePlayer, onEndTurn, increaseResource };
 };
