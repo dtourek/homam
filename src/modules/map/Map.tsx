@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Field } from './Field';
 import { IConfig } from '../../interfaces';
 import { IUserPlayer } from '../player/usePlayer';
@@ -70,7 +70,6 @@ interface IResource extends IField {
 const getResourceField = (resources: IResource[], currentLocation: ILocation) =>
   resources.find((resource) => resource.location.x === currentLocation.x && resource.location.y === currentLocation.y);
 
-// TODO - move to state
 const getFields = ({ unit, map }: IConfig, player: IPlayer, path: IPath[], resources: IResource[]): IFieldObj[] => {
   const fields: IFieldObj[] = [];
 
@@ -108,6 +107,11 @@ const getResources = (config: IConfig): IResource[] =>
 
 export const Map = ({ config, player, movePlayer, path, setPath, increaseResource }: IMapProps) => {
   const [resources, setResources] = useState<IResource[]>(getResources(config));
+  const [fields, setFields] = useState(getFields(config, player, path, resources));
+
+  useEffect(() => {
+    setFields(getFields(config, player, path, resources));
+  }, [path, player, config, resources]);
 
   const getPlayerTargetLocation = (raw: IRawPath): string => {
     if (raw.path.length < player.remainingMovement) {
@@ -150,7 +154,7 @@ export const Map = ({ config, player, movePlayer, path, setPath, increaseResourc
 
   return (
     <svg xmlns="http://www.w3.org/2000/svg" height={config.mapMaxSize} width={config.mapMaxSize}>
-      {getFields(config, player, path, resources).map(({ x, y, ...props }) => (
+      {fields.map(({ x, y, ...props }) => (
         <Field key={`unit-${x},${y}`} {...props} x={x * config.unit} y={y * config.unit} onClick={() => handleClick(x, y)} />
       ))}
     </svg>
