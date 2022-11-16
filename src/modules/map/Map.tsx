@@ -111,7 +111,7 @@ export const Map = ({ config, player, movePlayer, path, setPath, increaseResourc
 
   useEffect(() => {
     setFields(getFields(config, player, path, resources));
-  }, [path, player]);
+  }, [path, player, config, resources]);
 
   const getPlayerTargetLocation = (raw: IRawPath): string => {
     if (raw.path.length < player.remainingMovement) {
