@@ -1,3 +1,6 @@
+import { ILocation } from '../player/interfaces';
+import { IField } from '../map/field/interfaces';
+
 export enum ResourceType {
   gold = 'gold',
   rock = 'rock',
@@ -13,4 +16,8 @@ export interface IPlayerResources {
 export interface IMapResource {
   type: ResourceType;
   amount: number;
+}
+
+export interface IResourceField extends IField {
+  location: ILocation;
 }

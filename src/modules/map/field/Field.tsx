@@ -1,8 +1,8 @@
 import React from 'react';
-import { IFieldObj } from './Map';
 import { MouseEvent } from 'react';
+import { IFieldRaw } from './interfaces';
 
-interface IProps extends IFieldObj {
+interface IProps extends IFieldRaw {
   onClick: (event: MouseEvent) => void;
 }
 

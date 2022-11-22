@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { initPlayer } from '../../init';
 import { ILocation, IPlayer } from './interfaces';
-import { IField, WorldMap } from '../map/interfaces';
+import { WorldMap } from '../map/interfaces';
 import { IMapResource, IPlayerResources } from '../resources/interfaces';
-import { isObstacleField } from '../map/utils';
-
-export type IUserPlayer = ReturnType<typeof usePlayer>;
+import { IField } from '../map/field/interfaces';
+import { isObstacleField } from '../map/field/utils';
 
 const getField = (map: WorldMap, location: ILocation): IField | undefined => map.find((row, y) => location.y === y)?.find((row, x) => location.x === x);
 

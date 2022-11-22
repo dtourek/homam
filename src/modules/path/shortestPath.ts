@@ -1,7 +1,8 @@
 import { ILocation } from '../player/interfaces';
-import { FieldType, IField, WorldMap } from '../map/interfaces';
+import { WorldMap } from '../map/interfaces';
 import { AdjacencyListEdge, IAdjacencyList, IRawPath } from './interfaces';
-import { isObstacleField } from '../map/utils';
+import { FieldType, IField } from '../map/field/interfaces';
+import { isObstacleField } from '../map/field/utils';
 
 interface IQueueNode {
   value: string;

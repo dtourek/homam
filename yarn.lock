@@ -7930,10 +7930,10 @@ symbol-tree@^3.2.4:
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
-tabor@^1.0.13:
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/tabor/-/tabor-1.0.13.tgz#9488f8a152b53df93e3d25e98d5201bd9882db20"
-  integrity sha512-PmRBPYTG5YUbKtRXZycZXZuskzk3HBAYHN4eqS3ccvE65DEY2YxJwcUW87qM0l6s8Kv2ZYLUoPq/Sn2eHyNXPw==
+tabor@^1.0.15:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/tabor/-/tabor-1.0.15.tgz#3a083fc3512b8aa63bdb65fb94615eb9bf2029f8"
+  integrity sha512-9q7zrn+nBsqZD7s567B6Row3B5gcAOOwNmZ+F/EqNS7tOmPqMzo3ZQbHu4+ggxzDIGvTPyYEl89iQO5tYAqPow==
 
 tailwindcss@^3.0.2:
   version "3.0.23"

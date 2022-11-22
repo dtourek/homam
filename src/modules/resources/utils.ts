@@ -1,5 +1,6 @@
-import { FieldType, IField } from '../map/interfaces';
-import { IMapResource, ResourceType } from './interfaces';
+import { IMapResource, IResourceField, ResourceType } from './interfaces';
+import { ILocation } from '../player/interfaces';
+import { FieldType, IField } from '../map/field/interfaces';
 
 export const isResourceField = (field: IField): field is { type: FieldType; resource: IMapResource } => !!field.resource;
 export const getResourceFieldColor = (resource: IMapResource) => {
@@ -12,3 +13,6 @@ export const getResourceFieldColor = (resource: IMapResource) => {
       return '#D6CEB8'; // wood
   }
 };
+
+export const getResourceField = (resources: IResourceField[], currentLocation: ILocation) =>
+  resources.find((resource) => resource.location.x === currentLocation.x && resource.location.y === currentLocation.y);
