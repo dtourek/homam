@@ -1,5 +1,5 @@
 import { ShortestPath, toAdjacencyList } from '../shortestPath';
-import { FieldType } from '../../map/interfaces';
+import { FieldType } from '../../map/field/interfaces';
 import { IAdjacencyList } from '../interfaces';
 
 describe('shortestPath', () => {

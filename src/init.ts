@@ -1,7 +1,8 @@
 import { IPlayer } from './modules/player/interfaces';
-import { FieldType, WorldMap } from './modules/map/interfaces';
-import { getField } from './modules/map/utils';
+import { WorldMap } from './modules/map/interfaces';
 import { ResourceType } from './modules/resources/interfaces';
+import { getField } from './modules/map/field/utils';
+import { FieldType } from './modules/map/field/interfaces';
 
 export const initPlayer: IPlayer = { location: { x: 1, y: 1 }, remainingMovement: 5, resources: { gold: 10000, wood: 50, rock: 50 } };
 
