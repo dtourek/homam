@@ -1,4 +1,4 @@
-import { FieldType } from '../map/field/interfaces';
+import { FieldType } from '../field/interfaces';
 
 // https://coolors.co/020c16-1c1c1d-092c0f-789d99-e7e4a5-c2f3d6-c6b897
 export const getFieldSurfaceColor = (type: FieldType): string => {

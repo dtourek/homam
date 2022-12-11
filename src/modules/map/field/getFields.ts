@@ -5,7 +5,7 @@ import { getResourceField, getResourceFieldColor } from '../../resources/utils';
 import { IResourceField } from '../../resources/interfaces';
 import { getPathField } from '../../path/utils';
 import { isPlayerField } from '../../player/utils';
-import { getFieldSurfaceColor } from '../../surface/color';
+import { getFieldSurfaceColor } from '../surface/color';
 import { IFieldRaw } from './interfaces';
 import { isObstacleField } from './utils';
 
