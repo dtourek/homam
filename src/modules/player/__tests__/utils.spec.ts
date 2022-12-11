@@ -2,7 +2,7 @@ import { Race } from '../../race/types';
 import { IArmyUnit, UnitAttackType, UnitMovementType, UnitName } from '../../army/interfaces';
 import { ResourceType } from '../../resources/interfaces';
 import { IPlayer } from '../interfaces';
-import { addResources, addUnit } from '../utils';
+import { addResources, addUnit, buyUnit } from '../utils';
 
 const mockedUnit: IArmyUnit = {
   id: 1,
@@ -23,7 +23,7 @@ const mockPlayer: IPlayer = {
   remainingMovement: 0,
 };
 
-describe('usePlayer', () => {
+describe('utils', () => {
   describe('addUnit', () => {
     it('should not add unit to army when it does not exist in army and has 0 buy count', () => {
       expect(addUnit([], mockedUnit, 0)).toEqual([]);
@@ -69,6 +69,20 @@ describe('usePlayer', () => {
         [ResourceType.gold]: 150,
         [ResourceType.wood]: 60,
         [ResourceType.rock]: 60,
+      });
+    });
+  });
+
+  describe('buyUnit', () => {
+    it('should return null when cost of the troops is more than user has in resources', () => {
+      expect(buyUnit({ [ResourceType.gold]: 0, [ResourceType.wood]: 0, [ResourceType.rock]: 0 }, mockedUnit, 111)).toEqual(null);
+    });
+
+    it('should return resources minus 1 unit', () => {
+      expect(buyUnit({ [ResourceType.gold]: 10, [ResourceType.wood]: 10, [ResourceType.rock]: 10 }, mockedUnit, 1)).toEqual({
+        [ResourceType.gold]: 10,
+        [ResourceType.wood]: 9,
+        [ResourceType.rock]: 10,
       });
     });
   });

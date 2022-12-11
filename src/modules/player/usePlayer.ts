@@ -6,7 +6,7 @@ import { IMapResource, IPlayerResources } from '../resources/interfaces';
 import { IField } from '../map/field/interfaces';
 import { isObstacleField } from '../map/field/utils';
 import { IArmyUnit } from '../army/interfaces';
-import { addResources, addUnit } from './utils';
+import { addResources, addUnit, buyUnit } from './utils';
 
 export type IUsePlayer = ReturnType<typeof usePlayer>;
 
@@ -31,7 +31,7 @@ export const usePlayer = (defaultMovement: number) => {
   };
 
   const buyArmy = (unit: IArmyUnit, count: number) => {
-    setPlayer({ ...player, army: addUnit(player.army, unit, count) });
+    setPlayer({ ...player, army: addUnit(player.army, unit, count), resources: buyUnit(player.resources, unit, count) ?? player.resources });
   };
 
   return { player, movePlayer, onEndTurn, increaseResource, buyArmy };
