@@ -3,8 +3,15 @@ import { WorldMap } from './modules/map/interfaces';
 import { ResourceType } from './modules/resources/interfaces';
 import { getField } from './modules/map/field/utils';
 import { FieldType } from './modules/map/field/interfaces';
+import { Race } from './modules/race/types';
 
-export const initPlayer: IPlayer = { location: { x: 1, y: 1 }, remainingMovement: 5, resources: { gold: 10000, wood: 50, rock: 50 } };
+export const initPlayer: IPlayer = {
+  location: { x: 1, y: 1 },
+  remainingMovement: 5,
+  resources: { gold: 10, wood: 1, rock: 0 },
+  race: Race.knight,
+  army: [],
+};
 
 export const initWorldMap: WorldMap = [
   [

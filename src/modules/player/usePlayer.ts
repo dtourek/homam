@@ -5,6 +5,10 @@ import { WorldMap } from '../map/interfaces';
 import { IMapResource, IPlayerResources } from '../resources/interfaces';
 import { IField } from '../map/field/interfaces';
 import { isObstacleField } from '../map/field/utils';
+import { IArmyUnit } from '../army/interfaces';
+import { addResources, addUnit } from './utils';
+
+export type IUsePlayer = ReturnType<typeof usePlayer>;
 
 const getField = (map: WorldMap, location: ILocation): IField | undefined => map.find((row, y) => location.y === y)?.find((row, x) => location.x === x);
 
@@ -18,19 +22,17 @@ export const usePlayer = (defaultMovement: number) => {
     }
   };
 
-  const onEndTurn = (resources?: Partial<IPlayerResources>) => {
-    const updated: IPlayerResources = resources
-      ? Object.keys(resources).reduce((acc, key) => {
-          return { ...acc, [key]: acc[key] + resources[key] };
-        }, player.resources)
-      : player.resources;
-
-    setPlayer({ ...player, resources: updated, remainingMovement: defaultMovement });
+  const onEndTurn = (resources?: Partial<IPlayerResources>): void => {
+    setPlayer({ ...player, resources: resources ? addResources(resources, player) : player.resources, remainingMovement: defaultMovement });
   };
 
-  const increaseResource = (resource: IMapResource) => {
+  const increaseResource = (resource: IMapResource): void => {
     setPlayer({ ...player, resources: { ...player.resources, [resource.type]: player.resources[resource.type] + resource.amount } });
   };
 
-  return { player, movePlayer, onEndTurn, increaseResource };
+  const buyArmy = (unit: IArmyUnit, count: number) => {
+    setPlayer({ ...player, army: addUnit(player.army, unit, count) });
+  };
+
+  return { player, movePlayer, onEndTurn, increaseResource, buyArmy };
 };
