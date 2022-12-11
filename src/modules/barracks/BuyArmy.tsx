@@ -2,12 +2,13 @@ import React, { FormEvent, useState } from 'react';
 import { IArmyUnit } from '../army/interfaces';
 import { IPlayerResources } from '../resources/interfaces';
 import { IUsePlayer } from '../player/usePlayer';
+import { maxUnits } from './maxUnits';
 
 interface IProps {
   army: IArmyUnit[];
   unit: IArmyUnit;
   buyArmy: IUsePlayer['buyArmy'];
-  resources: IPlayerResources; // TODO
+  resources: IPlayerResources;
 }
 
 export const BuyArmy = ({ buyArmy, unit, resources }: IProps) => {
@@ -28,10 +29,18 @@ export const BuyArmy = ({ buyArmy, unit, resources }: IProps) => {
           type="number"
           value={buyCount}
           onChange={(e) => {
-            setBuyCount(Number(e.target.value));
+            const value = Number(e.target.value);
+            if (value <= maxUnits(unit, resources)) {
+              setBuyCount(value);
+            }
           }}
         />
-        <button type="submit">Buy</button>
+        <button type="button" onClick={() => setBuyCount(maxUnits(unit, resources))}>
+          Max
+        </button>
+        <button type="submit" disabled={buyCount === 0}>
+          Buy
+        </button>
       </form>
       {buyCount > 0 && (
         <p>

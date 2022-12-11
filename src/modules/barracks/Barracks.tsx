@@ -33,7 +33,7 @@ export const Barracks = ({ player, buyArmy }: IProps) => {
                 </span>
               ))}
             </li>
-            <li>Count: {player.army.find((u) => unit.id === u.id)?.owned}</li>
+            <li>Owned: {player.army.find((u) => unit.id === u.id)?.owned ?? 0}</li>
             <BuyArmy army={player.army} buyArmy={buyArmy} unit={unit} resources={player.resources} />
           </ul>
         </div>
