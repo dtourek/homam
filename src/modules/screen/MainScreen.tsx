@@ -18,7 +18,7 @@ export const MainScreen = ({ config }: IMainScreenProps) => {
   return (
     <>
       <Control player={player} screen={screen} setScreen={setScreen} onEndTurn={onEndTurn} defaultPlayerMove={config.playerMove} resetPath={resetPath} />
-      <Screens screen={screen} increaseResource={increaseResource} movePlayer={movePlayer} player={player} config={config} path={path} setPath={setPath} buyArmy={buyArmy} />;
+      <Screens screen={screen} increaseResource={increaseResource} movePlayer={movePlayer} player={player} config={config} path={path} setPath={setPath} buyArmy={buyArmy} />
     </>
   );
 };

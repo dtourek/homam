@@ -24,7 +24,9 @@ export const Barracks = ({ player, buyArmy }: IProps) => {
               Damage: {unit.attack.damage[0]} - {unit.attack.damage[1]}
             </li>
             <li>Health: {unit.hp}</li>
-            <li>Movement: {unit.movement.speed}</li>
+            <li>
+              Movement: speed: {unit.movement.speed}, type: {unit.movement.speed}
+            </li>
             <li>
               Cost:
               {unit.cost.map((cost) => (
