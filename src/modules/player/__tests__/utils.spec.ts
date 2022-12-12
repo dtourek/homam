@@ -91,21 +91,21 @@ describe('utils', () => {
 
   describe('changeActivePlayer', () => {
     it('should return []', () => {
-      expect(changeActivePlayer(0, [])).toEqual([]);
-      expect(changeActivePlayer(1, [])).toEqual([]);
+      expect(changeActivePlayer(0)([])).toEqual([]);
+      expect(changeActivePlayer(1)([])).toEqual([]);
     });
 
     it('should return unchanged players when such player not exist', () => {
-      expect(changeActivePlayer(45, [mockPlayer])).toEqual([mockPlayer]);
+      expect(changeActivePlayer(45)([mockPlayer])).toEqual([mockPlayer]);
     });
 
     it('should return same player when only 1 player exist', () => {
-      expect(changeActivePlayer(mockPlayer.id, [mockPlayer])).toEqual([mockPlayer]);
+      expect(changeActivePlayer(mockPlayer.id)([mockPlayer])).toEqual([mockPlayer]);
     });
 
     it('should change isActive from first to second player', () => {
       const secondPlayer: IPlayer = { ...mockPlayer, id: 2, isActive: false };
-      expect(changeActivePlayer(mockPlayer.id, [mockPlayer, secondPlayer])).toMatchObject([
+      expect(changeActivePlayer(mockPlayer.id)([mockPlayer, secondPlayer])).toMatchObject([
         { id: mockPlayer.id, isActive: false },
         { id: secondPlayer.id, isActive: true },
       ]);
@@ -113,7 +113,7 @@ describe('utils', () => {
 
     it('should change isActive fron last player to first player', () => {
       const secondPlayer: IPlayer = { ...mockPlayer, id: 2, isActive: true };
-      expect(changeActivePlayer(secondPlayer.id, [{ ...mockPlayer, isActive: false }, secondPlayer])).toMatchObject([
+      expect(changeActivePlayer(secondPlayer.id)([{ ...mockPlayer, isActive: false }, secondPlayer])).toMatchObject([
         { id: mockPlayer.id, isActive: true },
         { id: secondPlayer.id, isActive: false },
       ]);
