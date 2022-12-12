@@ -62,10 +62,10 @@ export const MapScreen = ({ config, player, increaseResource, movePlayer, path, 
         const field = config.map[targetLocation.y][targetLocation.x];
         if (isResourceField(field)) {
           setResources(resources.filter((resource) => targetLocation.x !== resource.location.x && targetLocation.y !== resource.location.y));
-          increaseResource(field.resource);
+          increaseResource(player.id, field.resource);
         }
 
-        movePlayer(targetLocation, getRemainingMovement(player, rawPath), config.map);
+        movePlayer(player.id, targetLocation, getRemainingMovement(player, rawPath), config.map);
       }
     }
   };

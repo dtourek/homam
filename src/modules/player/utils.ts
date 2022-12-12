@@ -3,12 +3,13 @@ import { IArmyUnit } from '../army/interfaces';
 import { IPlayerResources } from '../resources/interfaces';
 import { Nullable } from 'tabor';
 import { maxUnits } from '../barracks/maxUnits';
+import { equals } from '../../tools';
 
-export const isPlayerField = (location: ILocation, player: IPlayer): boolean => location.x === player.location.x && location.y === player.location.y;
+export const isPlayerField = (location: ILocation, player: IPlayer): boolean => equals(location.x, player.location.x) && equals(location.y, player.location.y);
 
 export const addUnit = (army: IArmyUnit[], unit: IArmyUnit, buyCount: number): IArmyUnit[] => {
   if (buyCount > 0) {
-    const exist = army.findIndex((ownedUnit) => ownedUnit.id === unit.id);
+    const exist = army.findIndex((ownedUnit) => equals(ownedUnit.id, unit.id));
     if (exist >= 0) {
       army[exist].owned = (army[exist].owned ?? 0) + buyCount;
       return army;
@@ -34,3 +35,25 @@ export const buyUnit = (resources: IPlayerResources, unit: IArmyUnit, count: num
     .reduce((acc, curr) => ({ ...acc, [curr.type]: resources[curr.type] - curr.amount }), {} as IPlayerResources);
   return { ...resources, ...cost };
 };
+
+const getPlayerIndex = (players: IPlayer[], nextPlayerIndex: number): number => (nextPlayerIndex > players.length - 1 ? 0 : nextPlayerIndex);
+export const equalsPlayerId = (player: IPlayer, playerId: number): boolean => player.id === playerId;
+
+export const changeActivePlayer =
+  (activePlayerId: number) =>
+  (players: IPlayer[]): IPlayer[] => {
+    if (players.length <= 1) {
+      return players;
+    }
+
+    const activePlayerIndex = players.findIndex((player) => equalsPlayerId(player, activePlayerId));
+    if (activePlayerIndex >= 0) {
+      return players.map((player, index) => {
+        if (equals(index, activePlayerIndex)) {
+          return { ...player, isActive: false };
+        }
+        return equals(index, getPlayerIndex(players, activePlayerIndex + 1)) ? { ...player, isActive: true } : player;
+      });
+    }
+    return players;
+  };
