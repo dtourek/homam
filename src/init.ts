@@ -5,8 +5,20 @@ import { getField } from './modules/map/field/utils';
 import { FieldType } from './modules/map/field/interfaces';
 import { Race } from './modules/race/types';
 
-export const initPlayer: IPlayer = {
+export const initPlayerOne: IPlayer = {
+  id: 1,
+  isActive: true,
   location: { x: 1, y: 1 },
+  remainingMovement: 5,
+  resources: { gold: 10, wood: 1, rock: 0 },
+  race: Race.knight,
+  army: [],
+};
+
+export const initPlayerTwo: IPlayer = {
+  id: 2,
+  isActive: false,
+  location: { x: 10, y: 10 },
   remainingMovement: 5,
   resources: { gold: 10, wood: 1, rock: 0 },
   race: Race.knight,

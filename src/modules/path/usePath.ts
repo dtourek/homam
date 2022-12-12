@@ -7,6 +7,7 @@ export interface IPath {
   reachable: boolean;
 }
 
+// TODO - remember path of each player and display it on his turn
 export const usePath = () => {
   const [path, setPath] = useState<IPath[]>([]);
 

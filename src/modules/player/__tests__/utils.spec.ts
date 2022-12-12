@@ -2,7 +2,7 @@ import { Race } from '../../race/types';
 import { IArmyUnit, UnitAttackType, UnitMovementType, UnitName } from '../../army/interfaces';
 import { ResourceType } from '../../resources/interfaces';
 import { IPlayer } from '../interfaces';
-import { addResources, addUnit, buyUnit } from '../utils';
+import { addResources, addUnit, buyUnit, changeActivePlayer } from '../utils';
 
 const mockedUnit: IArmyUnit = {
   id: 1,
@@ -16,6 +16,8 @@ const mockedUnit: IArmyUnit = {
 };
 
 const mockPlayer: IPlayer = {
+  id: 1,
+  isActive: true,
   army: [],
   resources: { [ResourceType.gold]: 0, [ResourceType.rock]: 0, [ResourceType.wood]: 0 },
   race: Race.knight,
@@ -84,6 +86,37 @@ describe('utils', () => {
         [ResourceType.wood]: 9,
         [ResourceType.rock]: 10,
       });
+    });
+  });
+
+  describe('changeActivePlayer', () => {
+    it('should return []', () => {
+      expect(changeActivePlayer(0)([])).toEqual([]);
+      expect(changeActivePlayer(1)([])).toEqual([]);
+    });
+
+    it('should return unchanged players when such player not exist', () => {
+      expect(changeActivePlayer(45)([mockPlayer])).toEqual([mockPlayer]);
+    });
+
+    it('should return same player when only 1 player exist', () => {
+      expect(changeActivePlayer(mockPlayer.id)([mockPlayer])).toEqual([mockPlayer]);
+    });
+
+    it('should change isActive from first to second player', () => {
+      const secondPlayer: IPlayer = { ...mockPlayer, id: 2, isActive: false };
+      expect(changeActivePlayer(mockPlayer.id)([mockPlayer, secondPlayer])).toMatchObject([
+        { id: mockPlayer.id, isActive: false },
+        { id: secondPlayer.id, isActive: true },
+      ]);
+    });
+
+    it('should change isActive fron last player to first player', () => {
+      const secondPlayer: IPlayer = { ...mockPlayer, id: 2, isActive: true };
+      expect(changeActivePlayer(secondPlayer.id)([{ ...mockPlayer, isActive: false }, secondPlayer])).toMatchObject([
+        { id: mockPlayer.id, isActive: true },
+        { id: secondPlayer.id, isActive: false },
+      ]);
     });
   });
 });

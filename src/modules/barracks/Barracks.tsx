@@ -36,7 +36,7 @@ export const Barracks = ({ player, buyArmy }: IProps) => {
               ))}
             </li>
             <li>Owned: {player.army.find((u) => unit.id === u.id)?.owned ?? 0}</li>
-            <BuyArmy army={player.army} buyArmy={buyArmy} unit={unit} resources={player.resources} />
+            <BuyArmy player={player} buyArmy={buyArmy} unit={unit} />
           </ul>
         </div>
       ))}

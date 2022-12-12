@@ -3,13 +3,13 @@ import { Resources } from '../resources/Resources';
 import { Screen } from './types';
 import React from 'react';
 import { IPlayer } from '../player/interfaces';
-import { IPlayerResources } from '../resources/interfaces';
+import { IUsePlayer } from '../player/usePlayer';
 
 interface IControlProps {
   screen: Screen;
   setScreen: (screen: Screen) => void;
   player: IPlayer;
-  onEndTurn: (resources: Partial<IPlayerResources>) => void;
+  onEndTurn: IUsePlayer['onEndTurn'];
   defaultPlayerMove: number;
   resetPath: (player: IPlayer, defaultMovement: number) => void;
 }
@@ -20,11 +20,12 @@ export const Control = ({ screen, setScreen, player, onEndTurn, defaultPlayerMov
   const endTurn = () => {
     increaseDay();
     resetPath(player, defaultPlayerMove);
-    onEndTurn({ gold: 10, rock: 1, wood: 1 });
+    onEndTurn(player.id, { gold: 10, rock: 1, wood: 1 });
   };
 
   return (
     <>
+      <p>Player: {player.id}</p>
       <Resources resources={player.resources} />
       <p>Remaining player move: {player.remainingMovement}</p>
       <p>Days: {day}</p>
