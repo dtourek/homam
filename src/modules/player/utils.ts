@@ -1,9 +1,10 @@
 import { ILocation, IPlayer } from './interfaces';
 import { IArmyUnit } from '../army/interfaces';
 import { IPlayerResources } from '../resources/interfaces';
-import { Nullable } from 'tabor';
+import { IMaybe, Nullable, success, fail, IEither, Optional } from 'tabor';
 import { maxUnits } from '../barracks/maxUnits';
 import { equals } from '../../tools';
+import { Right } from 'fputils';
 
 export const isPlayerField = (location: ILocation, player: IPlayer): boolean => equals(location.x, player.location.x) && equals(location.y, player.location.y);
 
@@ -57,3 +58,11 @@ export const changeActivePlayer =
     }
     return players;
   };
+
+export const activePlayer = (players: IPlayer[]): IPlayer => {
+  const active = players.find((player) => player.isActive);
+  if (!active) {
+    return players[0];
+  }
+  return active;
+};

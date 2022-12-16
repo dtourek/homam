@@ -6,6 +6,7 @@ import { IPath } from '../path/usePath';
 import { Barracks } from '../barracks/Barracks';
 import { MapScreen } from './MapScreen';
 import { IUsePlayer } from '../player/usePlayer';
+import { Battlefield } from '../battlefield/Battlefield';
 
 interface IScreensProps {
   screen: Screen;
@@ -16,11 +17,16 @@ interface IScreensProps {
   increaseResource: IUsePlayer['increaseResource'];
   movePlayer: IUsePlayer['movePlayer'];
   buyArmy: IUsePlayer['buyArmy'];
+  players: IPlayer[];
 }
 
-export const Screens = ({ screen, player, config, increaseResource, movePlayer, path, setPath, buyArmy }: IScreensProps) => {
+export const Screens = ({ screen, player, config, increaseResource, movePlayer, path, setPath, buyArmy, players }: IScreensProps) => {
   if (screen === Screen.barracks) {
     return <Barracks player={player} buyArmy={buyArmy} />;
+  }
+
+  if (screen === Screen.battle) {
+    return <Battlefield armies={players.map((player) => player.army)} />;
   }
 
   return <MapScreen config={config} player={player} increaseResource={increaseResource} movePlayer={movePlayer} path={path} setPath={setPath} />;

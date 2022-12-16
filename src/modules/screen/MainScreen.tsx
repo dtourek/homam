@@ -12,13 +12,23 @@ interface IMainScreenProps {
 
 export const MainScreen = ({ config }: IMainScreenProps) => {
   const [screen, setScreen] = useState<Screen>(Screen.map);
-  const { player, movePlayer, onEndTurn, increaseResource, buyArmy } = usePlayer(config.playerMove);
+  const { activePlayer, movePlayer, onEndTurn, increaseResource, buyArmy, players } = usePlayer(config.playerMove);
   const { path, setPath, resetPath } = usePath();
 
   return (
     <>
-      <Control player={player} screen={screen} setScreen={setScreen} onEndTurn={onEndTurn} defaultPlayerMove={config.playerMove} resetPath={resetPath} />
-      <Screens screen={screen} increaseResource={increaseResource} movePlayer={movePlayer} player={player} config={config} path={path} setPath={setPath} buyArmy={buyArmy} />
+      <Control player={activePlayer} screen={screen} setScreen={setScreen} onEndTurn={onEndTurn} defaultPlayerMove={config.playerMove} resetPath={resetPath} />
+      <Screens
+        screen={screen}
+        increaseResource={increaseResource}
+        movePlayer={movePlayer}
+        player={activePlayer}
+        config={config}
+        path={path}
+        setPath={setPath}
+        buyArmy={buyArmy}
+        players={players}
+      />
     </>
   );
 };

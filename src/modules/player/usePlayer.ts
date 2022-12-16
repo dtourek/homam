@@ -6,7 +6,7 @@ import { IMapResource, IPlayerResources } from '../resources/interfaces';
 import { IField } from '../map/field/interfaces';
 import { isObstacleField } from '../map/field/utils';
 import { IArmyUnit } from '../army/interfaces';
-import { addResources, addUnit, buyUnit, changeActivePlayer, equalsPlayerId } from './utils';
+import { activePlayer, addResources, addUnit, buyUnit, changeActivePlayer, equalsPlayerId } from './utils';
 import { pipe } from 'tabor';
 import { equals } from '../../tools';
 
@@ -51,13 +51,5 @@ export const usePlayer = (defaultMovement: number) => {
     );
   };
 
-  const activePlayer = (players: IPlayer[]): IPlayer => {
-    const active = players.find((player) => player.isActive);
-    if (!active) {
-      throw new Error('Cannot assign active player!'); // TODO - better fix
-    }
-    return active;
-  };
-
-  return { player: activePlayer(players), movePlayer, onEndTurn, increaseResource, buyArmy };
+  return { activePlayer: activePlayer(players), movePlayer, onEndTurn, increaseResource, buyArmy, players };
 };

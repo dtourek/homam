@@ -36,6 +36,9 @@ export const Control = ({ screen, setScreen, player, onEndTurn, defaultPlayerMov
       <button disabled={screen === Screen.map} onClick={() => setScreen(Screen.map)}>
         Back to Map
       </button>
+      <button disabled={screen === Screen.battle} onClick={() => setScreen(Screen.battle)}>
+        Battle
+      </button>
       <br />
     </>
   );

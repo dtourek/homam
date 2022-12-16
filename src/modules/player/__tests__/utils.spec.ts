@@ -2,7 +2,7 @@ import { Race } from '../../race/types';
 import { IArmyUnit, UnitAttackType, UnitMovementType, UnitName } from '../../army/interfaces';
 import { ResourceType } from '../../resources/interfaces';
 import { IPlayer } from '../interfaces';
-import { addResources, addUnit, buyUnit, changeActivePlayer } from '../utils';
+import { activePlayer, addResources, addUnit, buyUnit, changeActivePlayer } from '../utils';
 
 const mockedUnit: IArmyUnit = {
   id: 1,
@@ -15,9 +15,19 @@ const mockedUnit: IArmyUnit = {
   attack: { type: UnitAttackType.distance, damage: [1, 1] },
 };
 
-const mockPlayer: IPlayer = {
+const playerOne: IPlayer = {
   id: 1,
   isActive: true,
+  army: [],
+  resources: { [ResourceType.gold]: 0, [ResourceType.rock]: 0, [ResourceType.wood]: 0 },
+  race: Race.knight,
+  location: { x: 0, y: 0 },
+  remainingMovement: 0,
+};
+
+const playerTwo: IPlayer = {
+  id: 2,
+  isActive: false,
   army: [],
   resources: { [ResourceType.gold]: 0, [ResourceType.rock]: 0, [ResourceType.wood]: 0 },
   race: Race.knight,
@@ -54,18 +64,18 @@ describe('utils', () => {
 
   describe('addResources', () => {
     it('should not add any resource to the player when all values are 0', () => {
-      expect(addResources({ [ResourceType.gold]: 0, [ResourceType.rock]: 0 }, mockPlayer)).toEqual(mockPlayer.resources);
+      expect(addResources({ [ResourceType.gold]: 0, [ResourceType.rock]: 0 }, playerOne)).toEqual(playerOne.resources);
     });
 
     it('should add 1 gold resource to the player', () => {
-      expect(addResources({ [ResourceType.gold]: 1 }, mockPlayer)).toEqual({ [ResourceType.gold]: 1, [ResourceType.rock]: 0, [ResourceType.wood]: 0 });
+      expect(addResources({ [ResourceType.gold]: 1 }, playerOne)).toEqual({ [ResourceType.gold]: 1, [ResourceType.rock]: 0, [ResourceType.wood]: 0 });
     });
 
     it('should add all resources', () => {
       expect(
         addResources(
           { [ResourceType.gold]: 50, [ResourceType.rock]: 50, [ResourceType.wood]: 50 },
-          { ...mockPlayer, resources: { [ResourceType.gold]: 100, [ResourceType.rock]: 10, [ResourceType.wood]: 10 } },
+          { ...playerOne, resources: { [ResourceType.gold]: 100, [ResourceType.rock]: 10, [ResourceType.wood]: 10 } },
         ),
       ).toEqual({
         [ResourceType.gold]: 150,
@@ -96,27 +106,44 @@ describe('utils', () => {
     });
 
     it('should return unchanged players when such player not exist', () => {
-      expect(changeActivePlayer(45)([mockPlayer])).toEqual([mockPlayer]);
+      expect(changeActivePlayer(45)([playerOne])).toEqual([playerOne]);
     });
 
     it('should return same player when only 1 player exist', () => {
-      expect(changeActivePlayer(mockPlayer.id)([mockPlayer])).toEqual([mockPlayer]);
+      expect(changeActivePlayer(playerOne.id)([playerOne])).toEqual([playerOne]);
     });
 
     it('should change isActive from first to second player', () => {
-      const secondPlayer: IPlayer = { ...mockPlayer, id: 2, isActive: false };
-      expect(changeActivePlayer(mockPlayer.id)([mockPlayer, secondPlayer])).toMatchObject([
-        { id: mockPlayer.id, isActive: false },
-        { id: secondPlayer.id, isActive: true },
+      expect(changeActivePlayer(playerOne.id)([playerOne, playerTwo])).toMatchObject([
+        { id: playerOne.id, isActive: false },
+        { id: playerTwo.id, isActive: true },
       ]);
     });
 
     it('should change isActive fron last player to first player', () => {
-      const secondPlayer: IPlayer = { ...mockPlayer, id: 2, isActive: true };
-      expect(changeActivePlayer(secondPlayer.id)([{ ...mockPlayer, isActive: false }, secondPlayer])).toMatchObject([
-        { id: mockPlayer.id, isActive: true },
-        { id: secondPlayer.id, isActive: false },
+      expect(changeActivePlayer(playerTwo.id)([{ ...playerOne, isActive: false }, playerTwo])).toMatchObject([
+        { id: playerOne.id, isActive: true },
+        { id: playerTwo.id, isActive: false },
       ]);
+    });
+  });
+
+  describe('activePlayer', () => {
+    it('should return default player when 1 player present', () => {
+      expect(activePlayer([playerOne])).toEqual(playerOne);
+    });
+
+    it('should return first default player when none player is active', () => {
+      expect(activePlayer([{ ...playerOne, isActive: false }, playerTwo])).toEqual({ ...playerOne, isActive: false });
+    });
+
+    it('should return second player when is set to active', () => {
+      expect(
+        activePlayer([
+          { ...playerOne, isActive: false },
+          { ...playerTwo, isActive: true },
+        ]),
+      ).toEqual({ ...playerTwo, isActive: true });
     });
   });
 });
