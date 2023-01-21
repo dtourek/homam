@@ -5,6 +5,7 @@ import { Race } from '../race/types';
 export interface IPlayer {
   id: number;
   isActive: boolean;
+  isMoving: boolean;
   remainingMovement: number;
   location: ILocation;
   resources: IPlayerResources;

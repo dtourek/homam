@@ -3,7 +3,7 @@ import { ILocation, IPlayer } from '../player/interfaces';
 import { IResourceField } from '../resources/interfaces';
 import { WorldMap } from '../map/interfaces';
 import { IPath } from '../path/usePath';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IRawPath } from '../path/interfaces';
 import { coordinatesToString, getStepCoordinates, ShortestPath, toAdjacencyList } from '../path/shortestPath';
 import { cutHead, is, tail } from '../../tools';
@@ -11,9 +11,10 @@ import { pipe } from 'tabor';
 import { isResourceField } from '../resources/utils';
 import { Map } from '../map/Map';
 import { IUsePlayer } from '../player/usePlayer';
+import { ConfigStateContext } from '../store/config';
+import { PlayerDispatchContext, PlayerType } from '../player/playerStore';
 
 interface IMapScreenProps {
-  config: IConfig;
   player: IPlayer;
   increaseResource: IUsePlayer['increaseResource'];
   movePlayer: IUsePlayer['movePlayer'];
@@ -44,8 +45,20 @@ const getPlayerTargetLocation = (raw: IRawPath, player: IPlayer): string => {
 };
 const toLocation = ([x, y]: string[]): ILocation => ({ x: Number(x), y: Number(y) });
 
-export const MapScreen = ({ config, player, increaseResource, movePlayer, path, setPath }: IMapScreenProps) => {
+export const MapScreen = ({ player, increaseResource, movePlayer, path, setPath }: IMapScreenProps) => {
+  const config = useContext(ConfigStateContext);
   const [resources, setResources] = useState<IResourceField[]>(getResources(config));
+  const dispatch = useContext(PlayerDispatchContext);
+  const requestId = useRef<number>();
+
+  useEffect(() => {
+    const loop = () => {
+      // update();
+      requestId.current = requestAnimationFrame(loop);
+    };
+    requestId.current = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(requestId.current as number);
+  }, [player, path]);
 
   const update = (rawPath: IRawPath): void => {
     setPath(
@@ -64,8 +77,9 @@ export const MapScreen = ({ config, player, increaseResource, movePlayer, path, 
           setResources(resources.filter((resource) => targetLocation.x !== resource.location.x && targetLocation.y !== resource.location.y));
           increaseResource(player.id, field.resource);
         }
-
+        dispatch({ type: PlayerType.move, payload: { isMoving: true, id: player.id } });
         movePlayer(player.id, targetLocation, getRemainingMovement(player, rawPath), config.map);
+        dispatch({ type: PlayerType.move, payload: { isMoving: false, id: player.id } });
       }
     }
   };

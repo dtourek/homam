@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { initPlayerOne, initPlayerTwo } from '../../init';
 import { ILocation, IPlayer } from './interfaces';
 import { WorldMap } from '../map/interfaces';
@@ -9,6 +9,7 @@ import { IArmyUnit } from '../army/interfaces';
 import { addResources, addUnit, buyUnit, changeActivePlayer, equalsPlayerId } from './utils';
 import { pipe } from 'tabor';
 import { equals } from '../../tools';
+import { ConfigStateContext } from '../store/config';
 
 export type IUsePlayer = ReturnType<typeof usePlayer>;
 
@@ -21,7 +22,8 @@ const updateOnEndTurn = (players: IPlayer[], playerId: number, defaultMovement: 
     equalsPlayerId(player, playerId) ? { ...player, resources: resources ? addResources(resources, player) : player.resources, remainingMovement: defaultMovement } : player,
   );
 
-export const usePlayer = (defaultMovement: number) => {
+export const usePlayer = () => {
+  const config = useContext(ConfigStateContext);
   const [players, setPlayers] = useState<IPlayer[]>([initPlayerOne, initPlayerTwo]);
 
   const movePlayer = (playerId: number, targetLocation: IPlayer['location'], remainingMovement: IPlayer['remainingMovement'], map: WorldMap) => {
@@ -32,7 +34,7 @@ export const usePlayer = (defaultMovement: number) => {
   };
 
   const onEndTurn = (playerId: number, resources?: Partial<IPlayerResources>): void => {
-    setPlayers(pipe(updateOnEndTurn(players, playerId, defaultMovement, resources), changeActivePlayer(playerId)));
+    setPlayers(pipe(updateOnEndTurn(players, playerId, config.playerMove, resources), changeActivePlayer(playerId)));
   };
 
   const increaseResource = (playerId: number, resource: IMapResource): void => {

@@ -13,6 +13,7 @@ export const initPlayerOne: IPlayer = {
   resources: { gold: 10, wood: 1, rock: 0 },
   race: Race.knight,
   army: [],
+  isMoving: false,
 };
 
 export const initPlayerTwo: IPlayer = {
@@ -23,6 +24,7 @@ export const initPlayerTwo: IPlayer = {
   resources: { gold: 10, wood: 1, rock: 0 },
   race: Race.knight,
   army: [],
+  isMoving: false,
 };
 
 export const initWorldMap: WorldMap = [

@@ -1,25 +1,26 @@
 import { useTime } from '../time/useTime';
 import { Resources } from '../resources/Resources';
 import { Screen } from './types';
-import React from 'react';
+import React, { useContext } from 'react';
 import { IPlayer } from '../player/interfaces';
 import { IUsePlayer } from '../player/usePlayer';
+import { ConfigStateContext } from '../store/config';
 
 interface IControlProps {
   screen: Screen;
   setScreen: (screen: Screen) => void;
   player: IPlayer;
   onEndTurn: IUsePlayer['onEndTurn'];
-  defaultPlayerMove: number;
   resetPath: (player: IPlayer, defaultMovement: number) => void;
 }
 
-export const Control = ({ screen, setScreen, player, onEndTurn, defaultPlayerMove, resetPath }: IControlProps) => {
+export const Control = ({ screen, setScreen, player, onEndTurn, resetPath }: IControlProps) => {
   const { day, increaseDay } = useTime();
+  const config = useContext(ConfigStateContext);
 
   const endTurn = () => {
     increaseDay();
-    resetPath(player, defaultPlayerMove);
+    resetPath(player, config.playerMove);
     onEndTurn(player.id, { gold: 10, rock: 1, wood: 1 });
   };
 
