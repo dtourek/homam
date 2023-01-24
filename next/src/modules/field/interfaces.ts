@@ -37,13 +37,13 @@ export enum FieldObjectType {
   Resource = 'Resource'
 }
 
-interface IGoldResource {
+export interface IGoldResource {
   type: Resource.Gold;
   amount: number;
   color: '#FFD700'
 }
 
-interface IWoodResource {
+export interface IWoodResource {
   type: Resource.Wood;
   amount: number;
   color: '#603C1A'
@@ -57,15 +57,6 @@ export interface IResourceObject {
 type IFieldObject = IResourceObject // TODO - Hero, Army, mine, building,..
 
 export interface IMapField {
-  field: IFieldType;
+  type: IFieldType;
   onField?: IFieldObject;
-}
-
-export interface IFieldRaw {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  fill: string;
-  stroke?: string;
 }
