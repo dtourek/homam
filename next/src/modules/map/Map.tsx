@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext } from "react";
 import {ConfigContext} from "homam/modules/config/store";
 import {Field} from "homam/modules/field/Field";
 

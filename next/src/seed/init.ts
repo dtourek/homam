@@ -1,5 +1,5 @@
 import { IMapField } from "homam/modules/field/interfaces";
-import {desertField, goldResourceField, grassField, mountainField, woodResourceField} from "homam/modules/field/utils";
+import {desertField, goldResourceField, grassField, heroPlayer1Field, mountainField, woodResourceField} from "homam/modules/field/utils";
 
 export const initMapFields: IMapField[][] = [
   [
@@ -18,7 +18,7 @@ export const initMapFields: IMapField[][] = [
   ],
   [
     {type: grassField },
-    {type: grassField },
+    {type: grassField, onField: heroPlayer1Field },
     {type: grassField },
     {type: mountainField },
     {type: mountainField },
