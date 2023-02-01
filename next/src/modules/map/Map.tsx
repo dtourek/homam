@@ -1,15 +1,60 @@
-import React, { useContext } from "react";
-import {ConfigContext} from "homam/modules/config/store";
-import {Field} from "homam/modules/field/Field";
+import React, {useContext, MouseEvent, useRef} from "react";
+import {Tiles} from "homam/modules/tile/Tile";
+import {cursorMoveAction, GameDispatch, GameStore, heroMoveAction} from "homam/modules/store/store";
+import {Hero} from "homam/modules/hero/Hero";
+import {Cursor} from "homam/modules/cursor/Cursor";
+
 
 export const Map = () => {
-  const config = useContext(ConfigContext)
+  const store = useContext(GameStore)
+  const action = useContext(GameDispatch)
+  const element = useRef<SVGSVGElement>(null)
 
-  const onFieldClick = (x: number, y: number) => {
-    console.log('CLICKED ON:', x, y)
+  const onMouseMove = (event: MouseEvent<SVGSVGElement>): void => {
+    if (!element.current) {
+      return
+    }
+
+    const bounding = element.current.getBoundingClientRect()
+
+    const mapXPosition = event.clientX - bounding.left
+    const mapYPosition = event.clientY - bounding.top
+    // right
+    if ((mapXPosition - store.cursor.location.x) > store.map.tileSize) {
+      const x = Math.round(mapXPosition / store.map.tileSize) * store.map.tileSize
+      action(cursorMoveAction({x, y: store.cursor.location.y}))
+    } else if (mapXPosition < store.cursor.location.x) {
+      // left
+      const x = Math.floor(mapXPosition / store.map.tileSize) * store.map.tileSize
+      action(cursorMoveAction({x, y: store.cursor.location.y}))
+    } else if ((mapYPosition - store.cursor.location.y) > store.map.tileSize) {
+      // down
+      const y = Math.round(mapYPosition / store.map.tileSize) * store.map.tileSize
+      action(cursorMoveAction({x: store.cursor.location.x, y}))
+    } else if (mapYPosition < store.cursor.location.y) {
+      // up
+      const y = Math.floor(mapYPosition / store.map.tileSize) * store.map.tileSize
+      action(cursorMoveAction({ x: store.cursor.location.x, y}))
+    }
   }
 
-  return <svg xmlns="http://www.w3.org/2000/svg" height={config.map.maxSize} width={config.map.maxSize}>
-    {config.map.fields.map((row, x) => row.flatMap((field, y) => <Field key={`field-${x},${y}`} fieldSize={config.map.fieldSize} field={field} x={x} y={y} onClick={() => onFieldClick(x, y)} />))}
+  const onClick = (event: MouseEvent<SVGSVGElement>) => {
+    // const bounding = element.current.getBoundingClientRect()
+    //todo: calculate real position
+    // hero(moveAction([event.clientX - bounding.left, event.clientY - bounding.top]))
+    action(heroMoveAction({x: store.cursor.location.x, y: store.cursor.location.y}))
+  }
+
+  return <svg
+    ref={element}
+    xmlns="http://www.w3.org/store.map.tileSize00/svg"
+    height={store.map.maxSize}
+    width={store.map.maxSize}
+    onMouseMove={onMouseMove}
+    onClick={onClick}
+  >
+    <Tiles />
+    <Hero />
+    <Cursor />
   </svg>
 }

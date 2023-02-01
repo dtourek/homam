@@ -11,7 +11,7 @@
    3. Clickable map, now only console.log
 
 - [ ] Hero
-  1. create store
+  1. create store, render hero on map
   2. move hero without path
   3. animate hero move
 
