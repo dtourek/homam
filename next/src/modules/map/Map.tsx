@@ -1,117 +1,60 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
-import {HeroDispatch, HeroStore, moveAction, moveBirdAction} from "homam/modules/hero/store";
-import {Field} from "homam/modules/field/Field";
+import React, {useContext, MouseEvent, useRef} from "react";
+import {Tiles} from "homam/modules/tile/Tile";
+import {cursorMoveAction, GameDispatch, GameStore, heroMoveAction} from "homam/modules/store/store";
+import {Hero} from "homam/modules/hero/Hero";
+import {Cursor} from "homam/modules/cursor/Cursor";
 
 
 export const Map = () => {
-  const store = useContext(HeroStore)
-  const hero = useContext(HeroDispatch)
-  const el = useRef<any>(null)
+  const store = useContext(GameStore)
+  const action = useContext(GameDispatch)
+  const element = useRef<SVGSVGElement>(null)
 
+  const onMouseMove = (event: MouseEvent<SVGSVGElement>): void => {
+    if (!element.current) {
+      return
+    }
 
-  const [cursor, setCursor] = useState<any>({x:0, y:0}) // todo: into reducer
+    const bounding = element.current.getBoundingClientRect()
 
-    return <svg ref={el} xmlns="http://www.w3.org/2000/svg" height={store.map.maxSize} width={store.map.maxSize}
-    onMouseMove={(event) => {
-      const bounding = el.current.getBoundingClientRect()
+    const mapXPosition = event.clientX - bounding.left
+    const mapYPosition = event.clientY - bounding.top
+    // right
+    if ((mapXPosition - store.cursor.location.x) > store.map.tileSize) {
+      const x = Math.round(mapXPosition / store.map.tileSize) * store.map.tileSize
+      action(cursorMoveAction({x, y: store.cursor.location.y}))
+    } else if (mapXPosition < store.cursor.location.x) {
+      // left
+      const x = Math.floor(mapXPosition / store.map.tileSize) * store.map.tileSize
+      action(cursorMoveAction({x, y: store.cursor.location.y}))
+    } else if ((mapYPosition - store.cursor.location.y) > store.map.tileSize) {
+      // down
+      const y = Math.round(mapYPosition / store.map.tileSize) * store.map.tileSize
+      action(cursorMoveAction({x: store.cursor.location.x, y}))
+    } else if (mapYPosition < store.cursor.location.y) {
+      // up
+      const y = Math.floor(mapYPosition / store.map.tileSize) * store.map.tileSize
+      action(cursorMoveAction({ x: store.cursor.location.x, y}))
+    }
+  }
 
-      const newX = event.clientX - bounding.left
-      const newY = event.clientY - bounding.top
-
-      // doprava
-      if ((newX - cursor.x) > 20) {
-        const x = Math.round(newX / 20) * 20
-        setCursor({ x, y:cursor.y })
-      } else if (newX < cursor.x) {
-        // doleva
-        const x = Math.floor(newX / 20) * 20
-        setCursor({ x, y:cursor.y })
-      } else if ((newY - cursor.y) > 20) {
-        // dolu
-        const y = Math.round(newY / 20) * 20
-        setCursor({ x: cursor.x, y })
-      } else if (newY < cursor.y) {
-        //nahoru
-        const y = Math.floor(newY / 20) * 20
-        setCursor({ x: cursor.x, y: y })
-      }
-    }}
-              onClick={(event) => {
-                const bounding = el.current.getBoundingClientRect()
+  const onClick = (event: MouseEvent<SVGSVGElement>) => {
+    // const bounding = element.current.getBoundingClientRect()
     //todo: calculate real position
     // hero(moveAction([event.clientX - bounding.left, event.clientY - bounding.top]))
-    hero(moveAction([cursor.x, cursor.y]))
-  }}>
-    {/* {map.fields.map((row, x) => row.flatMap((field, y) => <Field key={`field-${x},${y}`} fieldSize={map.fieldSize} field={field} x={x} y={y} onClick={() => onFieldClick(x, y)} />))} */}
-
-    <Tiles />
-    <Hero  />
-    <Bird />
-    <Cursor x={cursor.x} y={cursor.y} />
-  </svg>
-}
-
-
-const getColor = (code: string) => {
-  switch (code) {
-    case 'D':
-      return '#E7E4A5'
-    case 'M':
-      return '#1C1C1D'
-    case 'G':
-      return '#C2F3D6'
-    default:
-        return 'black'
+    action(heroMoveAction({x: store.cursor.location.x, y: store.cursor.location.y}))
   }
-}
 
-
-const Tiles = () => {
-  const store = useContext(HeroStore)
-  return (
-      <>{store.map.tiles.map((row, y) => {
-        return row.flatMap((tile, x) => {
-          return (<Field x={x} y={y} color={getColor(tile)} fieldSize={store.map.tileSize} />)
-
-        })
-        })}
-      </>)
-}
-
-const Hero = () => {
-  const store = useContext(HeroStore)
-  const fieldSize = 20
-  const x = store.location[0]
-  const y = store.location[1]
-  return  (  <>
-    <rect width={fieldSize} height={fieldSize} x={x} y={y} fill={'red'} />
-    <rect width={fieldSize / 2} height={fieldSize / 2} x={x + fieldSize / 4} y={y + fieldSize / 4} fill={'red'} stroke="black" />
-  </>)
-}
-
-
-const Cursor = (props: any) => {
-  return  (  <>
-    <rect width={20} height={20} x={props.x} y={props.y} fill={'red'} stroke="black" />
-  </>)
-}
-
-const Bird = () => {
-  const hero = useContext(HeroDispatch)
-  const store = useContext(HeroStore)
-
-
-  const x = store.bird.location[0]
-  const y = store.bird.location[1]
-
-  useEffect(() => {
-    setTimeout(() => {
-      console.log('bird moved', store.bird.location)
-      hero(moveBirdAction([x+1, y]))
-    }, 1000)
-
-  }, [store.bird.location])
-
-
-  return  <rect width={50} height={50} x={x} y={y} fill={'red'} />
+  return <svg
+    ref={element}
+    xmlns="http://www.w3.org/store.map.tileSize00/svg"
+    height={store.map.maxSize}
+    width={store.map.maxSize}
+    onMouseMove={onMouseMove}
+    onClick={onClick}
+  >
+    <Tiles />
+    <Hero />
+    <Cursor />
+  </svg>
 }

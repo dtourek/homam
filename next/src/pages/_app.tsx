@@ -1,22 +1,23 @@
 import type { AppProps } from 'next/app'
 import {useRequestAnimationFrame} from "homam/modules/hooks/useRequestAnimationFrame";
 import {useReducer, useState} from "react";
-import {HeroDispatch, heroReducer, HeroStore, IHero, initialHeroReducer} from "homam/modules/hero/store";
+import {GameDispatch, GameStore, gameStoreReducer} from "homam/modules/store/store";
+import {initialGameStore} from "homam/init";
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const [heroes, dispatchHero] = useReducer(heroReducer, initialHeroReducer)
-
+  const [heroes, dispatchHero] = useReducer(gameStoreReducer, initialGameStore)
   const [count, setCount] = useState(0)
+
   useRequestAnimationFrame(() => {
     setCount((i) => i + 1)
   })
 
   return (
-      <HeroStore.Provider value={heroes}>
-        <HeroDispatch.Provider value={dispatchHero}>
+      <GameStore.Provider value={heroes}>
+        <GameDispatch.Provider value={dispatchHero}>
           <Component {...pageProps} />
-        </HeroDispatch.Provider>
-      </HeroStore.Provider>
+        </GameDispatch.Provider>
+      </GameStore.Provider>
   )
 }
 
