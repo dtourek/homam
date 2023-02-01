@@ -1,6 +1,7 @@
 import {useEffect, useRef} from "react";
+import {UpdateStateFn} from "homam/pages/_app";
 
-export const useRequestAnimationFrame = (updateFn: () => void) => {
+export const useRequestAnimationFrame = (updateFn: UpdateStateFn) => {
   const requestId = useRef<number>();
 
   useEffect(() => {
