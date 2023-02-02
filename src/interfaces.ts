@@ -1,8 +1,3 @@
-import { WorldMap } from './modules/map/interfaces';
-
-export interface IConfig {
-  unit: number;
-  mapMaxSize: number;
-  playerMove: number;
-  map: WorldMap;
-}
+export type WithRequiredProperty<Type, Key extends keyof Type> = Type & {
+  [Property in Key]-?: Type[Property];
+};
