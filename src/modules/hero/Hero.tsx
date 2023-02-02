@@ -11,7 +11,7 @@ export const Hero = () => {
         height={store.map.fieldSize / 2}
         x={store.player.hero.location.x + store.map.fieldSize / 4}
         y={store.player.hero.location.y + store.map.fieldSize / 4}
-        fill={'white'}
+        fill={store.player.hero.isMoving ? 'green' : 'white'}
         stroke="black"
       />
     </>

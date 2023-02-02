@@ -3,7 +3,7 @@ import { GameDispatch, GameStore } from 'homam/modules/store/store';
 import { Hero } from 'homam/modules/hero/Hero';
 import { Cursor } from 'homam/modules/cursor/Cursor';
 import { Fields } from 'homam/modules/field/Fields';
-import { cursorMoveAction, heroMoveAction } from 'homam/modules/store/actions';
+import { GameStoreActions } from 'homam/modules/store/actions';
 import { locationFromMouseEvent } from 'homam/modules/utils';
 
 export const Map = () => {
@@ -13,12 +13,20 @@ export const Map = () => {
 
   const onMouseMove = (event: MouseEvent<SVGSVGElement>): void => {
     const location = locationFromMouseEvent(event, store.cursor.location, store.map.fieldSize, element.current);
-    action(cursorMoveAction(location));
+    if (store.cursor.location.x !== location.x || store.cursor.location.y !== location.y) {
+      action({
+        type: GameStoreActions.cursorMove,
+        location,
+      });
+    }
   };
 
   const onMouseDown = (event: MouseEvent<SVGSVGElement>) => {
     const location = locationFromMouseEvent(event, store.cursor.location, store.map.fieldSize, element.current);
-    action(heroMoveAction(location));
+    action({
+      type: GameStoreActions.heroMoveStart,
+      location,
+    });
   };
 
   return (

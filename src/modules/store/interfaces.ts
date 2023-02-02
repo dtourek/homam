@@ -39,6 +39,6 @@ interface IMap {
 
 export interface IGameStore {
   map: IMap;
-  player: { hero: { id: number; name: string; location: ILocation } };
+  player: { hero: { id: number; name: string; location: ILocation; isMoving: boolean } };
   cursor: { location: ILocation };
 }

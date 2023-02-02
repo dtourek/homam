@@ -10,9 +10,20 @@ interface ICursorMoveAction {
   location: ILocation;
 }
 
-export type IGameStoreAction = IHeroMoveAction | ICursorMoveAction;
+interface IHeroMoveActionStart {
+  type: GameStoreActions.heroMoveStart;
+  location: ILocation;
+}
+
+interface IHeroMoveActionEnd {
+  type: GameStoreActions.heroMoveEnd;
+}
+
+export type IGameStoreAction = IHeroMoveAction | ICursorMoveAction | IHeroMoveActionStart | IHeroMoveActionEnd;
 
 export enum GameStoreActions {
+  heroMoveEnd = 'hero-move-end',
+  heroMoveStart = 'hero-move-start',
   heroMove = 'hero-move',
   cursorMove = 'cursor-move',
 }
