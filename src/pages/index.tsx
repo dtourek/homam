@@ -1,5 +1,5 @@
-import Head from "next/head";
-import { Map } from "homam/modules/map/Map";
+import Head from 'next/head';
+import { Map } from 'homam/modules/map/Map';
 
 const Home = () => {
   return (

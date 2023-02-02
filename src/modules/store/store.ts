@@ -1,54 +1,10 @@
-import { createContext } from "react";
-import { initialGameStore } from "homam/init";
+import { createContext } from 'react';
+import { initialGameStore } from 'homam/init';
+import { FieldType, IField, IGameStore, IInitMapFieldType, IInitStore, ILocation } from 'homam/modules/store/interfaces';
+import { GameStoreActions, IGameStoreAction } from 'homam/modules/store/actions';
+import { toGameStore } from 'homam/modules/store/toGameStore';
 
-export interface ILocation {
-  x: number;
-  y: number;
-}
-type MapFieldType = "M" | "G" | "D";
-
-interface IMap {
-  maxSize: number;
-  tileSize: number;
-  tiles: MapFieldType[][];
-}
-
-export interface IGameStore {
-  map: IMap;
-  player: { hero: { id: number; name: string; location: ILocation } };
-  cursor: { location: ILocation };
-}
-
-enum GameStoreActions {
-  heroMove = "hero-move",
-  cursorMove = "cursor-move",
-}
-
-interface IHeroMoveAction {
-  type: GameStoreActions.heroMove;
-  location: ILocation;
-}
-
-interface ICursorMoveAction {
-  type: GameStoreActions.cursorMove;
-  location: ILocation;
-}
-
-type IGameStoreAction = IHeroMoveAction | ICursorMoveAction;
-
-export const heroMoveAction = (location: ILocation): IHeroMoveAction => ({
-  type: GameStoreActions.heroMove,
-  location,
-});
-export const cursorMoveAction = (location: ILocation): ICursorMoveAction => ({
-  type: GameStoreActions.cursorMove,
-  location,
-});
-
-export const gameStoreReducer = (
-  state: IGameStore,
-  action: IGameStoreAction
-): IGameStore => {
+export const gameStoreReducer = (state: IGameStore, action: IGameStoreAction): IGameStore => {
   switch (action.type) {
     case GameStoreActions.heroMove:
       console.log(action);
@@ -66,5 +22,6 @@ export const gameStoreReducer = (
   }
 };
 
-export const GameStore = createContext<IGameStore>(initialGameStore);
+export const defaultGameStore = toGameStore(initialGameStore);
+export const GameStore = createContext<IGameStore>(defaultGameStore);
 export const GameDispatch = createContext((_value: IGameStoreAction) => {});
