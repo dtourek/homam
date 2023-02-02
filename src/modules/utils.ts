@@ -1,5 +1,5 @@
 import { MouseEvent } from 'react';
-import { ILocation } from 'homam/modules/store/store';
+import { ILocation } from 'homam/modules/store/interfaces';
 
 export const locationFromMouseEvent = (event: MouseEvent<SVGSVGElement>, cursor: ILocation, tileSize: number, svg: SVGElement | null): ILocation => {
   const bounding = svg?.getBoundingClientRect();

@@ -1,4 +1,4 @@
-import { IInitStore } from 'homam/modules/store/store';
+import { IInitStore } from 'homam/modules/store/interfaces';
 
 export const initialGameStore: IInitStore = {
   player: { hero: { location: { x: 0, y: 0 }, id: 1, name: 'John' } },

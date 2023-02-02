@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { initialGameStore } from 'homam/init';
-import { FieldType, IField, IGameStore, IInitMapFieldType, IInitStore, ILocation } from 'homam/modules/store/interfaces';
+import { IGameStore } from 'homam/modules/store/interfaces';
 import { GameStoreActions, IGameStoreAction } from 'homam/modules/store/actions';
 import { toGameStore } from 'homam/modules/store/toGameStore';
 
