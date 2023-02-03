@@ -37,7 +37,6 @@ const mapFields = (initFields: IInitMapFieldType[][]): IField[] =>
 
 export const toGameStore = (store: IInitStore): IGameStore => ({
   ...store,
-  player: { ...store.player, hero: { ...store.player.hero, isMoving: false } },
   map: {
     ...store.map,
     fields: mapFields(store.map.fields),
