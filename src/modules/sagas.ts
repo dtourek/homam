@@ -3,22 +3,24 @@ import { fieldSizeSelector, heroLocationSelector, heroMove, heroMoveEnd, moveToS
 import { delay, step } from 'homam/modules/store/middleware';
 import { isSameLocation } from 'homam/modules/utils';
 
-function* moveHero() {
-  const moveTo = yield select(moveToSelector);
+// TODO: better types for sagas
+
+function* moveHero(): Generator<any> {
+  const moveTo: any = yield select(moveToSelector);
   if (!moveTo) {
     return;
   }
 
-  const stepSize = yield select(fieldSizeSelector);
-  const location = yield select(heroLocationSelector);
+  const stepSize: any = yield select(fieldSizeSelector);
+  const location: any = yield select(heroLocationSelector);
   const newLocation = step(stepSize, location, moveTo);
-  yield put(heroMove(newLocation));
 
+  yield put(heroMove(newLocation));
   if (isSameLocation(moveTo, newLocation)) {
     yield put(heroMoveEnd());
   }
 
-  yield delay(100);
+  yield delay(400);
   yield moveHero();
 }
 
