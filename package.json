@@ -10,15 +10,19 @@
     "test": "jest"
   },
   "dependencies": {
-    "@next/font": "13.1.4",
+    "@next/font": "13.1.6",
+    "@reduxjs/toolkit": "^1.9.2",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
-    "eslint": "8.22.0",
+    "eslint": "8.33.0",
     "eslint-config-next": "13.1.4",
     "next": "13.1.6",
+    "fputils": "^1.2.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-redux": "^8.0.5",
+    "redux-saga": "^1.2.2",
     "typescript": "4.9.4"
   },
   "devDependencies": {
