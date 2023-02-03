@@ -24,8 +24,6 @@ export enum FieldType {
 
 export interface IField {
   type: FieldType;
-  weight: number;
-  color: string;
   x: number;
   y: number;
 }

@@ -1,39 +1,18 @@
 import { FieldType, IField, IGameStore, IInitMapFieldType, IInitStore } from 'homam/modules/store/interfaces';
 
-const getFieldColor = (code: string) => {
-  switch (code) {
+const getFieldType = (field: IInitMapFieldType): FieldType => {
+  switch (field) {
+    case 'G':
+      return FieldType.grass;
     case 'D':
-      return '#E7E4A5';
+      return FieldType.desert;
     case 'M':
-      return '#1C1C1D';
-    case 'G':
-      return '#C2F3D6';
     default:
-      return 'black';
+      return FieldType.mountain;
   }
 };
 
-const getFieldWeight = (code: IInitMapFieldType): number => {
-  switch (code) {
-    case 'G':
-      return 1;
-    case 'D':
-      return 2;
-    default:
-      return 100;
-  }
-};
-
-const mapFields = (initFields: IInitMapFieldType[][]): IField[][] =>
-  initFields.map((row, y) =>
-    row.flatMap((field, x) => ({
-      type: FieldType.grass,
-      x,
-      y,
-      weight: getFieldWeight(field),
-      color: getFieldColor(field),
-    })),
-  );
+const mapFields = (initFields: IInitMapFieldType[][]): IField[][] => initFields.map((row, y) => row.flatMap((field, x) => ({ type: getFieldType(field), x, y })));
 
 export const toGameStore = (store: IInitStore): IGameStore => ({
   ...store,
