@@ -30,23 +30,22 @@ const pathToFields = (rawPath: IRawPath, fields: IField[][], fieldSize: number):
     .map((field) => ({ ...field, x: field.x * fieldSize, y: field.y * fieldSize }));
 
 export const Map = () => {
-  const store = useContext(GameStore);
-  const action = useContext(GameDispatch);
   const element = useRef<SVGSVGElement>(null);
+  const cursor = useAppSelector((state) => state.game.cursor);
+  const map = useAppSelector((state) => state.game.map);
+
+  const dispatch = useAppDispatch();
 
   const onMouseMove = (event: MouseEvent<SVGSVGElement>): void => {
-    const location = locationFromMouseEvent(event, store.cursor.location, store.map.fieldSize, element.current);
-    if (store.cursor.location.x !== location.x || store.cursor.location.y !== location.y) {
-      action(cursorMoveAction(location));
+    const location = locationFromMouseEvent(event, cursor.location, map.fieldSize, element.current);
+    if (cursor.location.x !== location.x || cursor.location.y !== location.y) {
+      dispatch(cursorMove(location));
     }
   };
 
   const onMouseDown = (event: MouseEvent<SVGSVGElement>) => {
     const location = locationFromMouseEvent(event, store.cursor.location, store.map.fieldSize, element.current);
-    action({
-      type: GameStoreActions.heroMoveStart,
-      location,
-    });
+    dispatch(heroMoveStart(location));
 
     const edges = { start: coordinatesToString(store.player.hero.location, store.map.fieldSize), end: coordinatesToString(location, store.map.fieldSize) };
     const path = pipe(edges, getShortestPath(store.map.fields), cutHeadPath);

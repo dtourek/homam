@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { GameStore } from 'homam/modules/store/store';
+import React from "react";
+import { useAppSelector } from "homam/store";
 
 export const MoveToCursor = () => {
-  const store = useContext(GameStore);
+  const store = useAppSelector((state) => state.game);
   if (!store.player.hero.moveTo) {
     return <></>;
   }
@@ -12,7 +12,7 @@ export const MoveToCursor = () => {
       height={store.map.fieldSize / 2}
       x={store.player.hero.moveTo.x + store.map.fieldSize / 4}
       y={store.player.hero.moveTo.y + store.map.fieldSize / 4}
-      fill={'green'}
+      fill={"green"}
       stroke="#ccc"
       fillOpacity={0.5}
     />

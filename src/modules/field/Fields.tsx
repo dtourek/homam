@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { GameStore } from 'homam/modules/store/store';
+import React from "react";
+import { useAppSelector } from "homam/store";
 
 interface IProps {
   x: number;
@@ -14,7 +14,8 @@ const Field = ({ y, x, color, fieldSize }: IProps) => (
 
 // TODO - fields to 1D array to improve peformance
 export const Fields = () => {
-  const store = useContext(GameStore);
+  const store = useAppSelector((state) => state.game);
+
   return (
     <>
       {store.map.fields.map((row, y) =>
