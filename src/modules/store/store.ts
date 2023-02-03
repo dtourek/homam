@@ -38,12 +38,12 @@ export const gameSlice = createSlice({
       return { ...state, cursor: { location: action.payload } };
     },
     heroPath: (state, action) => {
-      return { ...state, player: { ...state.player, hero: { ...state.player.hero, path: action.path } } };
-    }
+      return { ...state, player: { ...state.player, hero: { ...state.player.hero, path: action.payload } } };
+    },
   },
 });
 
-export const { heroMove, heroMoveStart, cursorMove, heroMoveEnd } = gameSlice.actions;
+export const { heroMove, heroMoveStart, cursorMove, heroMoveEnd, heroPath } = gameSlice.actions;
 
 export const fieldSizeSelector = (store: RootState) => store.game.map.fieldSize;
 export const moveToSelector = (store: RootState) => store.game.player.hero.moveTo;
