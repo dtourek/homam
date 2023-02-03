@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppSelector } from 'homam/store';
+import { getFieldMeta } from 'homam/modules/field/utils';
 
 interface IProps {
   x: number;
@@ -18,8 +19,11 @@ export const Fields = () => {
 
   return (
     <>
-      {store.map.fields.map((row, y) =>
-        row.flatMap((field, x) => <Field key={`${field.x}-${field.y}`} x={field.x} y={field.y} color={field.color} fieldSize={store.map.fieldSize} />),
+      {store.map.fields.map((row) =>
+        row.flatMap((field) => {
+          const { color } = getFieldMeta(field.type);
+          return <Field key={`${field.x}-${field.y}`} x={field.x} y={field.y} color={color} fieldSize={store.map.fieldSize} />;
+        }),
       )}
     </>
   );

@@ -1,5 +1,6 @@
 import { FieldType, IField, ILocation } from 'homam/modules/store/interfaces';
 import { AdjacencyListEdge, IAdjacencyList, IRawPath } from 'homam/modules/path/interfaces';
+import { getFieldMeta } from 'homam/modules/field/utils';
 
 interface IQueueNode {
   value: string;
@@ -50,7 +51,8 @@ const getAdjacencyNode =
       return undefined;
     }
 
-    return { node: coordinatesToString({ x, y }), weight: neighbour.weight };
+    const { weight } = getFieldMeta(neighbour.type);
+    return { node: coordinatesToString({ x, y }), weight };
   };
 
 const getNeighbours = (x: number, y: number, fields: IField[][], row: IField[]): AdjacencyListEdge[] => {
