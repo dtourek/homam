@@ -1,7 +1,7 @@
 import { IInitStore } from 'homam/modules/store/interfaces';
 
 export const initialGameStore: IInitStore = {
-  player: { hero: { location: { x: 0, y: 0 }, id: 1, name: 'John' } },
+  player: { hero: { location: { x: 0, y: 0 }, id: 1, name: 'John', path: { fields: [], weight: 0 } } },
   cursor: { location: { x: 0, y: 0 } },
   map: {
     maxSize: 240,

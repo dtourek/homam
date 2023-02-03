@@ -1,4 +1,4 @@
-import { ILocation } from 'homam/modules/store/interfaces';
+import { ILocation, IPath } from 'homam/modules/store/interfaces';
 
 interface IHeroMoveAction {
   type: GameStoreActions.heroMove;
@@ -19,21 +19,27 @@ interface IHeroMoveActionEnd {
   type: GameStoreActions.heroMoveEnd;
 }
 
-export type IGameStoreAction = IHeroMoveAction | ICursorMoveAction | IHeroMoveActionStart | IHeroMoveActionEnd;
+interface IHeroPathAction {
+  type: GameStoreActions.heroPath;
+  path: IPath;
+}
+
+export type IGameStoreAction = IHeroMoveAction | ICursorMoveAction | IHeroMoveActionStart | IHeroMoveActionEnd | IHeroPathAction;
 
 export enum GameStoreActions {
   heroMoveEnd = 'hero-move-end',
   heroMoveStart = 'hero-move-start',
   heroMove = 'hero-move',
+  heroPath = 'hero-path',
   cursorMove = 'cursor-move',
 }
-
-export const heroMoveAction = (location: ILocation): IHeroMoveAction => ({
-  type: GameStoreActions.heroMove,
-  location,
-});
 
 export const cursorMoveAction = (location: ILocation): ICursorMoveAction => ({
   type: GameStoreActions.cursorMove,
   location,
+});
+
+export const heroPathAction = (path: IPath): IHeroPathAction => ({
+  type: GameStoreActions.heroPath,
+  path,
 });

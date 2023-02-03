@@ -31,6 +31,8 @@ const gameStoreReducer = (state: IGameStore, action: IGameStoreAction): IGameSto
           hero: { ...state.player.hero, moveTo: undefined },
         },
       };
+    case GameStoreActions.heroPath:
+      return { ...state, player: { ...state.player, hero: { ...state.player.hero, path: action.path } } };
     case GameStoreActions.cursorMove:
       return { ...state, cursor: { location: action.location } };
     default:
