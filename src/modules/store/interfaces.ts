@@ -37,7 +37,6 @@ interface IHero {
   id: number;
   name: string;
   location: ILocation;
-  isMoving: boolean;
   path: IPath;
   moveTo?: ILocation;
   stepsLeft: number;

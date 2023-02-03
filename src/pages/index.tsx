@@ -20,7 +20,7 @@ const Home = () => {
         <div>
           <p>Hero Steps left: {hero.stepsLeft}</p>
           <button
-            disabled={hero.isMoving}
+            disabled={!!hero.moveTo}
             onClick={() => {
               dispatch(endTurn());
             }}

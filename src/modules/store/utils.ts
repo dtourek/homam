@@ -22,7 +22,7 @@ export const toGameStore = (store: IInitStore): IGameStore => ({
     ...store.map,
     fields: mapFields(store.map.fields),
   },
-  player: { ...store.player, hero: { ...store.player.hero, isMoving: false, stepsLeft: 5 } },
+  player: { ...store.player, hero: { ...store.player.hero, stepsLeft: 5 } },
 });
 
 export const subtractFieldWeight = (stepsLeft: number, field: IField) => {

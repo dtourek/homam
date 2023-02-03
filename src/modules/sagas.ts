@@ -1,5 +1,5 @@
 import { put, takeLatest, select } from 'redux-saga/effects';
-import { heroMove, heroMoveEnd, moveToSelector, pathSelector } from 'homam/modules/store/store';
+import { heroMove, heroMoveEnd, heroSelector, moveToSelector } from 'homam/modules/store/store';
 import { isSameLocation } from 'homam/modules/utils';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -12,12 +12,12 @@ function* moveHero(): Generator<any> {
     return;
   }
 
-  const path: any = yield select(pathSelector);
+  const hero: any = yield select(heroSelector);
 
-  const newLocation = path.fields[0];
+  const newLocation = hero.path.fields[0];
 
   yield put(heroMove(newLocation));
-  if (isSameLocation(moveTo, newLocation)) {
+  if (hero.stepsLeft <= 1 || isSameLocation(moveTo, newLocation)) {
     yield put(heroMoveEnd());
   }
 

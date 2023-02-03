@@ -28,7 +28,7 @@ export const gameSlice = createSlice({
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, moveTo: action.payload, isMoving: true },
+          hero: { ...state.player.hero, moveTo: action.payload },
         },
       };
     },
@@ -37,7 +37,7 @@ export const gameSlice = createSlice({
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, moveTo: undefined, isMoving: false },
+          hero: { ...state.player.hero, moveTo: undefined },
         },
       };
     },
@@ -55,5 +55,5 @@ export const gameSlice = createSlice({
 
 export const { heroMove, heroMoveStart, cursorMove, heroMoveEnd, heroPath, endTurn } = gameSlice.actions;
 
-export const pathSelector = (store: RootState) => store.game.player.hero.path;
+export const heroSelector = (store: RootState) => store.game.player.hero;
 export const moveToSelector = (store: RootState) => store.game.player.hero.moveTo;
