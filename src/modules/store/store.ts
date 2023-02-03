@@ -1,29 +1,32 @@
-import { createContext, Dispatch, useReducer } from 'react';
 import { initialGameStore } from 'homam/init';
-import { IGameStore } from 'homam/modules/store/interfaces';
-import { GameStoreActions, IGameStoreAction } from 'homam/modules/store/actions';
 import { toGameStore } from 'homam/modules/store/toGameStore';
+import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from 'homam/store';
 
-const gameStoreReducer = (state: IGameStore, action: IGameStoreAction): IGameStore => {
-  // console.log(action);
-  switch (action.type) {
-    case GameStoreActions.heroMove:
+export const gameSlice = createSlice({
+  name: 'game',
+  initialState: toGameStore(initialGameStore),
+  reducers: {
+    heroMove: (state, action) => {
+      const [head, ...fields] = state.player.hero.path.fields;
       return {
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, location: action.location },
+          hero: { ...state.player.hero, location: action.payload, path: { ...state.player.hero.path, fields } },
         },
       };
-    case GameStoreActions.heroMoveStart:
+    },
+    heroMoveStart: (state, action) => {
       return {
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, moveTo: action.location },
+          hero: { ...state.player.hero, moveTo: action.payload },
         },
       };
-    case GameStoreActions.heroMoveEnd:
+    },
+    heroMoveEnd: (state) => {
       return {
         ...state,
         player: {
@@ -31,27 +34,17 @@ const gameStoreReducer = (state: IGameStore, action: IGameStoreAction): IGameSto
           hero: { ...state.player.hero, moveTo: undefined },
         },
       };
-    case GameStoreActions.heroPath:
-      return { ...state, player: { ...state.player, hero: { ...state.player.hero, path: action.path } } };
-    case GameStoreActions.cursorMove:
-      return { ...state, cursor: { location: action.location } };
-    default:
-      return state;
-  }
-};
+    },
+    cursorMove: (state, action) => {
+      return { ...state, cursor: { location: action.payload } };
+    },
+    heroPath: (state, action) => {
+      return { ...state, player: { ...state.player, hero: { ...state.player.hero, path: action.payload } } };
+    },
+  },
+});
 
-export const defaultGameStore = toGameStore(initialGameStore);
+export const { heroMove, heroMoveStart, cursorMove, heroMoveEnd, heroPath } = gameSlice.actions;
 
-export const useReducerWithMiddleware = (middlewareFn: (action: IGameStoreAction) => void): [IGameStore, Dispatch<IGameStoreAction>] => {
-  const [store, dispatch] = useReducer(gameStoreReducer, defaultGameStore);
-
-  const dispatchWithMiddleware = (action: IGameStoreAction) => {
-    middlewareFn(action);
-    dispatch(action);
-  };
-
-  return [store, dispatchWithMiddleware];
-};
-
-export const GameStore = createContext<IGameStore>(defaultGameStore);
-export const GameDispatch = createContext((_value: IGameStoreAction) => {});
+export const pathSelector = (store: RootState) => store.game.player.hero.path;
+export const moveToSelector = (store: RootState) => store.game.player.hero.moveTo;
