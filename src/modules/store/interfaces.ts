@@ -6,7 +6,6 @@ export interface ILocation {
 export type IInitMapFieldType = 'M' | 'G' | 'D';
 
 interface IInitMap {
-  maxSize: number;
   fieldSize: number;
   fields: IInitMapFieldType[][];
 }
@@ -46,7 +45,6 @@ interface IHero {
 }
 
 interface IMap {
-  maxSize: number;
   fieldSize: number;
   fields: IField[][];
 }

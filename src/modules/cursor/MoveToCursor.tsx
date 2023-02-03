@@ -6,15 +6,14 @@ export const MoveToCursor = () => {
   if (!store.player.hero.moveTo) {
     return <></>;
   }
+
+  const moveTo = store.player.hero.moveTo;
+  const fieldSize = store.map.fieldSize;
+  const off = fieldSize / 4;
   return (
-    <rect
-      width={store.map.fieldSize / 2}
-      height={store.map.fieldSize / 2}
-      x={store.player.hero.moveTo.x + store.map.fieldSize / 4}
-      y={store.player.hero.moveTo.y + store.map.fieldSize / 4}
-      fill={'green'}
-      stroke="#ccc"
-      fillOpacity={0.5}
-    />
+    <>
+      <line x1={moveTo.x + off} y1={moveTo.y + off} x2={moveTo.x + fieldSize - off} y2={moveTo.y + fieldSize - off} stroke="green" strokeWidth={5} opacity={0.5} />
+      <line x1={moveTo.x + fieldSize - off} y1={moveTo.y + off} x2={moveTo.x + off} y2={moveTo.y + fieldSize - off} stroke="green" strokeWidth={5} opacity={0.5} />
+    </>
   );
 };

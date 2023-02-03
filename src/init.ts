@@ -4,8 +4,7 @@ export const initialGameStore: IInitStore = {
   player: { hero: { location: { x: 0, y: 0 }, id: 1, name: 'John', path: { fields: [], weight: 0 } } },
   cursor: { location: { x: 0, y: 0 } },
   map: {
-    maxSize: 240,
-    fieldSize: 20,
+    fieldSize: 50,
     fields: [
       ['D', 'M', 'M', 'G', 'G', 'G', 'G', 'G', 'G', 'D', 'D', 'D'],
       ['G', 'G', 'G', 'M', 'M', 'G', 'G', 'G', 'G', 'D', 'D', 'D'],

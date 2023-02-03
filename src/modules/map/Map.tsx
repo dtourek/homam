@@ -3,7 +3,7 @@ import { cursorMove, heroMoveStart, heroPath } from 'homam/modules/store/store';
 import { Hero } from 'homam/modules/hero/Hero';
 import { Cursor } from 'homam/modules/cursor/Cursor';
 import { Fields } from 'homam/modules/field/Fields';
-import { cutHead, locationFromMouseEvent } from 'homam/modules/utils';
+import { cutHead, isSameLocation, locationFromMouseEvent } from 'homam/modules/utils';
 import { getStepCoordinates, ShortestPath, toAdjacencyList } from 'homam/modules/path/shortestPath';
 import { IRawPath } from 'homam/modules/path/interfaces';
 import { IField } from 'homam/modules/store/interfaces';
@@ -46,7 +46,7 @@ export const Map = () => {
 
   const onMouseMove = (event: MouseEvent<SVGSVGElement>): void => {
     const location = locationFromMouseEvent(event, cursor.location, map.fieldSize, element.current);
-    if (cursor.location.x !== location.x || cursor.location.y !== location.y) {
+    if (!isSameLocation(cursor.location, location)) {
       dispatch(cursorMove(location));
     }
   };
@@ -68,8 +68,11 @@ export const Map = () => {
     dispatch(heroMoveStart(location));
   };
 
+  const width = map.fields.length * map.fieldSize;
+  const height = map.fields[0].length * map.fieldSize;
+
   return (
-    <svg ref={element} xmlns="http://www.w3.org/svg" height={map.maxSize} width={map.maxSize} onMouseMove={onMouseMove} onMouseDown={onMouseDown}>
+    <svg ref={element} xmlns="http://www.w3.org/svg" height={height} width={width} onMouseMove={onMouseMove} onMouseDown={onMouseDown}>
       <Fields />
       <Path />
       <Hero />
