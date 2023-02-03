@@ -1954,6 +1954,11 @@ for-each@^0.3.3:
   dependencies:
     is-callable "^1.1.3"
 
+fputils@^1.2.10:
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/fputils/-/fputils-1.2.10.tgz#e9735c3ae4d4749930d53271b063e84f21c419db"
+  integrity sha512-02eGKNDcY4GzeQ/zqlgqzcKfncMpGfrQu36AH+qhVfE39qZRwPfzr7PPuEJfwcsHk6O5tdkfoAxS4TB4o4iTcA==
+
 fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"

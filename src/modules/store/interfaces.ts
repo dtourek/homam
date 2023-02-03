@@ -13,7 +13,7 @@ interface IInitMap {
 
 export interface IInitStore {
   map: IInitMap;
-  player: { hero: { id: number; name: string; location: ILocation } };
+  player: { hero: { id: number; name: string; location: ILocation; path: IPath } };
   cursor: { location: ILocation };
 }
 
@@ -31,21 +31,28 @@ export interface IField {
   y: number;
 }
 
+export interface IPath {
+  fields: IField[];
+  weight: number;
+}
+
+interface IHero {
+  id: number;
+  name: string;
+  location: ILocation;
+  isMoving: boolean;
+  path: IPath;
+  moveTo?: ILocation;
+}
+
 interface IMap {
   maxSize: number;
   fieldSize: number;
-  fields: IField[];
+  fields: IField[][];
 }
 
 export interface IGameStore {
   map: IMap;
-  player: {
-    hero: {
-      id: number;
-      name: string;
-      location: ILocation;
-      moveTo?: ILocation;
-    };
-  };
+  player: { hero: IHero };
   cursor: { location: ILocation };
 }
