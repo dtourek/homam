@@ -1,13 +1,19 @@
-import { createContext, Dispatch, useReducer } from 'react';
-import { initialGameStore } from 'homam/init';
-import { IGameStore } from 'homam/modules/store/interfaces';
-import { GameStoreActions, IGameStoreAction } from 'homam/modules/store/actions';
-import { toGameStore } from 'homam/modules/store/toGameStore';
+import { createContext, Dispatch, useReducer } from "react";
+import { initialGameStore } from "homam/init";
+import { IGameStore } from "homam/modules/store/interfaces";
+import {
+  GameStoreActions,
+  IGameStoreAction,
+} from "homam/modules/store/actions";
+import { toGameStore } from "homam/modules/store/toGameStore";
 
-const gameStoreReducer = (state: IGameStore, action: IGameStoreAction): IGameStore => {
+const gameStoreReducer = (
+  state: IGameStore,
+  action: IGameStoreAction
+): IGameStore => {
+  // console.log(action);
   switch (action.type) {
     case GameStoreActions.heroMove:
-      console.log(action);
       return {
         ...state,
         player: {
@@ -20,7 +26,7 @@ const gameStoreReducer = (state: IGameStore, action: IGameStoreAction): IGameSto
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, isMoving: true },
+          hero: { ...state.player.hero, moveTo: action.location },
         },
       };
     case GameStoreActions.heroMoveEnd:
@@ -28,7 +34,7 @@ const gameStoreReducer = (state: IGameStore, action: IGameStoreAction): IGameSto
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, isMoving: false },
+          hero: { ...state.player.hero, moveTo: undefined },
         },
       };
     case GameStoreActions.cursorMove:
@@ -40,15 +46,17 @@ const gameStoreReducer = (state: IGameStore, action: IGameStoreAction): IGameSto
 
 export const defaultGameStore = toGameStore(initialGameStore);
 
-export const useReducerWithMiddleware = (middlewareFn: (action: IGameStoreAction) => void): [IGameStore, Dispatch<IGameStoreAction>] => {
-  const [state, dispatch] = useReducer(gameStoreReducer, defaultGameStore);
+export const useReducerWithMiddleware = (
+  middlewareFn: (action: IGameStoreAction) => void
+): [IGameStore, Dispatch<IGameStoreAction>] => {
+  const [store, dispatch] = useReducer(gameStoreReducer, defaultGameStore);
 
   const dispatchWithMiddleware = (action: IGameStoreAction) => {
     middlewareFn(action);
     dispatch(action);
   };
 
-  return [state, dispatchWithMiddleware];
+  return [store, dispatchWithMiddleware];
 };
 
 export const GameStore = createContext<IGameStore>(defaultGameStore);
