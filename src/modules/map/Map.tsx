@@ -53,7 +53,6 @@ export const Map = () => {
 
   const onMouseDown = (event: MouseEvent<SVGSVGElement>) => {
     const location = locationFromMouseEvent(event, cursor.location, map.fieldSize, element.current);
-    dispatch(heroMoveStart(location));
 
     const edges = {
       start: coordinatesToString(player.hero.location, map.fieldSize),
@@ -66,6 +65,7 @@ export const Map = () => {
         weight: path.weight,
       }),
     );
+    dispatch(heroMoveStart(location));
   };
 
   return (

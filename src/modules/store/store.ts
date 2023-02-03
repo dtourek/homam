@@ -8,11 +8,12 @@ export const gameSlice = createSlice({
   initialState: toGameStore(initialGameStore),
   reducers: {
     heroMove: (state, action) => {
+      const [head, ...fields] = state.player.hero.path.fields;
       return {
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, location: action.payload },
+          hero: { ...state.player.hero, location: action.payload, path: { ...state.player.hero.path, fields } },
         },
       };
     },
@@ -45,6 +46,5 @@ export const gameSlice = createSlice({
 
 export const { heroMove, heroMoveStart, cursorMove, heroMoveEnd, heroPath } = gameSlice.actions;
 
-export const fieldSizeSelector = (store: RootState) => store.game.map.fieldSize;
+export const pathSelector = (store: RootState) => store.game.player.hero.path;
 export const moveToSelector = (store: RootState) => store.game.player.hero.moveTo;
-export const heroLocationSelector = (store: RootState) => store.game.player.hero.location;
