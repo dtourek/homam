@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { GameStore } from 'homam/modules/store/store';
+import React from 'react';
+import { useAppSelector } from 'homam/store';
 
 export const MoveToCursor = () => {
-  const store = useContext(GameStore);
+  const store = useAppSelector((state) => state.game);
   if (!store.player.hero.moveTo) {
     return <></>;
   }

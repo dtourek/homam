@@ -24,8 +24,8 @@ const getFieldWeight = (code: IInitMapFieldType): number => {
   }
 };
 
-const mapFields = (initFields: IInitMapFieldType[][]): IField[] =>
-  initFields.flatMap((row, y) =>
+const mapFields = (initFields: IInitMapFieldType[][]): IField[][] =>
+  initFields.map((row, y) =>
     row.flatMap((field, x) => ({
       type: FieldType.grass,
       x,
@@ -41,4 +41,5 @@ export const toGameStore = (store: IInitStore): IGameStore => ({
     ...store.map,
     fields: mapFields(store.map.fields),
   },
+  player: { ...store.player, hero: { ...store.player.hero, isMoving: false } },
 });
