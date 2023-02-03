@@ -1,19 +1,25 @@
 import { initialGameStore } from 'homam/init';
-import { toGameStore } from 'homam/modules/store/toGameStore';
+import { toGameStore } from 'homam/modules/store/utils';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from 'homam/store';
+import { subtractFieldWeight } from 'homam/modules/store/utils';
 
 export const gameSlice = createSlice({
   name: 'game',
   initialState: toGameStore(initialGameStore),
   reducers: {
     heroMove: (state, action) => {
-      const [head, ...fields] = state.player.hero.path.fields;
+      const [currentField, ...fields] = state.player.hero.path.fields;
       return {
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, location: action.payload, path: { ...state.player.hero.path, fields } },
+          hero: {
+            ...state.player.hero,
+            location: action.payload,
+            path: { ...state.player.hero.path, fields },
+            stepsLeft: subtractFieldWeight(state.player.hero.stepsLeft, currentField),
+          },
         },
       };
     },
@@ -22,7 +28,7 @@ export const gameSlice = createSlice({
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, moveTo: action.payload },
+          hero: { ...state.player.hero, moveTo: action.payload, isMoving: true },
         },
       };
     },
@@ -31,7 +37,7 @@ export const gameSlice = createSlice({
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, moveTo: undefined },
+          hero: { ...state.player.hero, moveTo: undefined, isMoving: false },
         },
       };
     },
@@ -41,10 +47,13 @@ export const gameSlice = createSlice({
     heroPath: (state, action) => {
       return { ...state, player: { ...state.player, hero: { ...state.player.hero, path: action.payload } } };
     },
+    endTurn: (state) => {
+      return { ...state, turn: state.turn + 1, player: { ...state.player, hero: { ...state.player.hero, stepsLeft: 5 } } }; // TODO steps based on hero
+    },
   },
 });
 
-export const { heroMove, heroMoveStart, cursorMove, heroMoveEnd, heroPath } = gameSlice.actions;
+export const { heroMove, heroMoveStart, cursorMove, heroMoveEnd, heroPath, endTurn } = gameSlice.actions;
 
 export const pathSelector = (store: RootState) => store.game.player.hero.path;
 export const moveToSelector = (store: RootState) => store.game.player.hero.moveTo;
