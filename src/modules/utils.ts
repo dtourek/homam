@@ -15,3 +15,5 @@ export const locationFromMouseEvent = (event: MouseEvent<SVGSVGElement>, cursor:
 
   return { x, y };
 };
+
+export const isSameLocation = (a: ILocation, b: ILocation) => a.x === b.x && a.y === b.y;
