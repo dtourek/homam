@@ -1,16 +1,10 @@
-import { createContext, Dispatch, useReducer } from "react";
-import { initialGameStore } from "homam/init";
-import { IGameStore } from "homam/modules/store/interfaces";
-import {
-  GameStoreActions,
-  IGameStoreAction,
-} from "homam/modules/store/actions";
-import { toGameStore } from "homam/modules/store/toGameStore";
+import { createContext, Dispatch, useReducer } from 'react';
+import { initialGameStore } from 'homam/init';
+import { IGameStore } from 'homam/modules/store/interfaces';
+import { GameStoreActions, IGameStoreAction } from 'homam/modules/store/actions';
+import { toGameStore } from 'homam/modules/store/toGameStore';
 
-const gameStoreReducer = (
-  state: IGameStore,
-  action: IGameStoreAction
-): IGameStore => {
+const gameStoreReducer = (state: IGameStore, action: IGameStoreAction): IGameStore => {
   // console.log(action);
   switch (action.type) {
     case GameStoreActions.heroMove:
@@ -46,9 +40,7 @@ const gameStoreReducer = (
 
 export const defaultGameStore = toGameStore(initialGameStore);
 
-export const useReducerWithMiddleware = (
-  middlewareFn: (action: IGameStoreAction) => void
-): [IGameStore, Dispatch<IGameStoreAction>] => {
+export const useReducerWithMiddleware = (middlewareFn: (action: IGameStoreAction) => void): [IGameStore, Dispatch<IGameStoreAction>] => {
   const [store, dispatch] = useReducer(gameStoreReducer, defaultGameStore);
 
   const dispatchWithMiddleware = (action: IGameStoreAction) => {

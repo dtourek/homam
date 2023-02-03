@@ -3,7 +3,7 @@ export interface ILocation {
   y: number;
 }
 
-export type IInitMapFieldType = "M" | "G" | "D";
+export type IInitMapFieldType = 'M' | 'G' | 'D';
 
 interface IInitMap {
   maxSize: number;
@@ -18,9 +18,9 @@ export interface IInitStore {
 }
 
 export enum FieldType {
-  mountain = "mountain",
-  grass = "grass",
-  desert = "desert",
+  mountain = 'mountain',
+  grass = 'grass',
+  desert = 'desert',
 }
 
 export interface IField {

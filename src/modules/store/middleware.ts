@@ -1,9 +1,6 @@
-import { IGameStore, ILocation } from "homam/modules/store/interfaces";
-import {
-  GameStoreActions,
-  IGameStoreAction,
-} from "homam/modules/store/actions";
-import { isSameLocation } from "homam/modules/utils";
+import { IGameStore, ILocation } from 'homam/modules/store/interfaces';
+import { GameStoreActions, IGameStoreAction } from 'homam/modules/store/actions';
+import { isSameLocation } from 'homam/modules/utils';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -26,11 +23,7 @@ const getMovement = (stepSize: number, current: ILocation) => ({
   }),
 });
 
-const step = (
-  stepSize: number,
-  current: ILocation,
-  final: ILocation
-): ILocation => {
+const step = (stepSize: number, current: ILocation, final: ILocation): ILocation => {
   const move = getMovement(stepSize, current);
   if (final.x > current.x) {
     return move.right();
@@ -50,12 +43,7 @@ const step = (
   return current;
 };
 
-export const heroMoveMiddleware = async (
-  store: IGameStore,
-  dispatch: (action: IGameStoreAction) => void,
-  position: ILocation,
-  final: ILocation
-): Promise<void> => {
+export const heroMoveMiddleware = async (store: IGameStore, dispatch: (action: IGameStoreAction) => void, position: ILocation, final: ILocation): Promise<void> => {
   const stepSize = store.map.fieldSize;
 
   // when already moving

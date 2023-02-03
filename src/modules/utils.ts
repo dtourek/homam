@@ -1,12 +1,7 @@
-import { MouseEvent } from "react";
-import { ILocation } from "homam/modules/store/interfaces";
+import { MouseEvent } from 'react';
+import { ILocation } from 'homam/modules/store/interfaces';
 
-export const locationFromMouseEvent = (
-  event: MouseEvent<SVGSVGElement>,
-  cursor: ILocation,
-  tileSize: number,
-  svg: SVGElement | null
-): ILocation => {
+export const locationFromMouseEvent = (event: MouseEvent<SVGSVGElement>, cursor: ILocation, tileSize: number, svg: SVGElement | null): ILocation => {
   const bounding = svg?.getBoundingClientRect();
   if (!bounding) {
     return cursor;
@@ -21,5 +16,4 @@ export const locationFromMouseEvent = (
   return { x, y };
 };
 
-export const isSameLocation = (a: ILocation, b: ILocation) =>
-  a.x === b.x && a.y === b.y;
+export const isSameLocation = (a: ILocation, b: ILocation) => a.x === b.x && a.y === b.y;
