@@ -1,8 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { gameSlice } from "homam/modules/store/store";
-import createSagaMiddleware from "redux-saga";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import rootSaga from "homam/modules/sagas";
+import { configureStore } from '@reduxjs/toolkit';
+import { gameSlice } from 'homam/modules/store/store';
+import createSagaMiddleware from 'redux-saga';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import rootSaga from 'homam/modules/sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 

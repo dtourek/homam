@@ -1,7 +1,6 @@
-import { ILocation } from "homam/modules/store/interfaces";
+import { ILocation } from 'homam/modules/store/interfaces';
 
-export const delay = (ms: number) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const getMovement = (stepSize: number, current: ILocation) => ({
   right: () => ({
@@ -22,11 +21,7 @@ const getMovement = (stepSize: number, current: ILocation) => ({
   }),
 });
 
-export const step = (
-  stepSize: number,
-  current: ILocation,
-  final: ILocation
-): ILocation => {
+export const step = (stepSize: number, current: ILocation, final: ILocation): ILocation => {
   const move = getMovement(stepSize, current);
   if (final.x > current.x) {
     return move.right();

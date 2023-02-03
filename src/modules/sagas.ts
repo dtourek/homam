@@ -1,13 +1,7 @@
-import { put, takeLatest, select } from "redux-saga/effects";
-import {
-  fieldSizeSelector,
-  heroLocationSelector,
-  heroMove,
-  heroMoveEnd,
-  moveToSelector,
-} from "homam/modules/store/store";
-import { delay, step } from "homam/modules/store/middleware";
-import { isSameLocation } from "homam/modules/utils";
+import { put, takeLatest, select } from 'redux-saga/effects';
+import { fieldSizeSelector, heroLocationSelector, heroMove, heroMoveEnd, moveToSelector } from 'homam/modules/store/store';
+import { delay, step } from 'homam/modules/store/middleware';
+import { isSameLocation } from 'homam/modules/utils';
 
 function* moveHero() {
   const moveTo = yield select(moveToSelector);
@@ -29,7 +23,7 @@ function* moveHero() {
 }
 
 function* rootSaga() {
-  yield takeLatest("game/heroMoveStart", moveHero);
+  yield takeLatest('game/heroMoveStart', moveHero);
 }
 
 export default rootSaga;

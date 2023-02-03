@@ -1,5 +1,5 @@
-import React from "react";
-import { useAppSelector } from "homam/store";
+import React from 'react';
+import { useAppSelector } from 'homam/store';
 
 interface IProps {
   x: number;

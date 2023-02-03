@@ -1,10 +1,10 @@
-import { initialGameStore } from "homam/init";
-import { toGameStore } from "homam/modules/store/toGameStore";
-import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "homam/store";
+import { initialGameStore } from 'homam/init';
+import { toGameStore } from 'homam/modules/store/toGameStore';
+import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from 'homam/store';
 
 export const gameSlice = createSlice({
-  name: "game",
+  name: 'game',
   initialState: toGameStore(initialGameStore),
   reducers: {
     heroMove: (state, action) => {
@@ -43,11 +43,8 @@ export const gameSlice = createSlice({
   },
 });
 
-export const { heroMove, heroMoveStart, cursorMove, heroMoveEnd } =
-  gameSlice.actions;
+export const { heroMove, heroMoveStart, cursorMove, heroMoveEnd } = gameSlice.actions;
 
 export const fieldSizeSelector = (store: RootState) => store.game.map.fieldSize;
-export const moveToSelector = (store: RootState) =>
-  store.game.player.hero.moveTo;
-export const heroLocationSelector = (store: RootState) =>
-  store.game.player.hero.location;
+export const moveToSelector = (store: RootState) => store.game.player.hero.moveTo;
+export const heroLocationSelector = (store: RootState) => store.game.player.hero.location;
