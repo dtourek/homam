@@ -37,9 +37,9 @@ interface IHero {
   id: number;
   name: string;
   location: ILocation;
-  isMoving: boolean;
   path: IPath;
   moveTo?: ILocation;
+  stepsLeft: number;
 }
 
 interface IMap {
@@ -49,6 +49,7 @@ interface IMap {
 
 export interface IGameStore {
   map: IMap;
+  turn: number;
   player: { hero: IHero };
   cursor: { location: ILocation };
 }

@@ -65,7 +65,9 @@ export const Map = () => {
         weight: path.weight,
       }),
     );
-    dispatch(heroMoveStart(location));
+    if (player.hero.stepsLeft > 0) {
+      dispatch(heroMoveStart(location));
+    }
   };
 
   const width = map.fields.length * map.fieldSize;
