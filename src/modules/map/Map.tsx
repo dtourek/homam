@@ -13,7 +13,7 @@ import { MoveToCursor } from 'homam/modules/cursor/MoveToCursor';
 import { Path } from 'homam/modules/path/Path';
 import { useAppDispatch, useAppSelector } from 'homam/store';
 
-const coordinatesToString = (location: ILocation, fieldSize: number): string => `${location.x},${location.y}`;
+const coordinatesToString = (location: ILocation, fieldSize: number): string => `${location.x / fieldSize},${location.y / fieldSize}`;
 const locationToFieldCoordinates = ({ x, y }: ILocation, fieldSize: number): ILocation => ({ x: x / fieldSize, y: y / fieldSize });
 const isObstacleField = ({ x, y }: ILocation, fields: IField[][]) => fields[y][x].type === FieldType.mountain;
 
