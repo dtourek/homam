@@ -6,14 +6,16 @@ import { Fields } from 'homam/modules/field/Fields';
 import { cutHead, isSameLocation, locationFromMouseEvent } from 'homam/modules/utils';
 import { getStepCoordinates, ShortestPath, toAdjacencyList } from 'homam/modules/path/shortestPath';
 import { IRawPath } from 'homam/modules/path/interfaces';
-import { IField } from 'homam/modules/store/interfaces';
+import { FieldType, IField } from 'homam/modules/store/interfaces';
 import { pipe } from 'fputils';
 import { ILocation } from '../../../_OLD/src/modules/player/interfaces';
 import { MoveToCursor } from 'homam/modules/cursor/MoveToCursor';
 import { Path } from 'homam/modules/path/Path';
 import { useAppDispatch, useAppSelector } from 'homam/store';
 
-export const coordinatesToString = (location: ILocation, fieldSize: number): string => `${location.x / fieldSize},${location.y / fieldSize}`;
+const coordinatesToString = (location: ILocation, fieldSize: number): string => `${location.x / fieldSize},${location.y / fieldSize}`;
+const locationToFieldCoordinates = ({ x, y }: ILocation, fieldSize: number): ILocation => ({ x: x / fieldSize, y: y / fieldSize });
+const isObstacleField = ({ x, y }: ILocation, fields: IField[][]) => fields[y][x].type === FieldType.mountain;
 
 const getShortestPath =
   (fields: IField[][]) =>
@@ -53,6 +55,10 @@ export const Map = () => {
 
   const onMouseDown = (event: MouseEvent<SVGSVGElement>) => {
     const location = locationFromMouseEvent(event, cursor.location, map.fieldSize, element.current);
+    const coordinates = locationToFieldCoordinates(location, map.fieldSize);
+    if (isObstacleField(coordinates, map.fields)) {
+      return;
+    }
 
     const edges = {
       start: coordinatesToString(player.hero.location, map.fieldSize),
