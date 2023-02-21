@@ -54,6 +54,9 @@ export const Map = () => {
   };
 
   const onMouseDown = (event: MouseEvent<SVGSVGElement>) => {
+    if (player.hero.isMoving) {
+      return;
+    }
     const location = locationFromMouseEvent(event, cursor.location, map.fieldSize, element.current);
     const coordinates = locationToFieldCoordinates(location, map.fieldSize);
     if (isObstacleField(coordinates, map.fields)) {

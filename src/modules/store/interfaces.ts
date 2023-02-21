@@ -12,7 +12,7 @@ interface IInitMap {
 
 export interface IInitStore {
   map: IInitMap;
-  player: { hero: { id: number; name: string; location: ILocation; path: IPath } };
+  player: { hero: IHero };
   cursor: { location: ILocation };
 }
 
@@ -40,6 +40,7 @@ interface IHero {
   path: IPath;
   moveTo?: ILocation;
   stepsLeft: number;
+  isMoving: boolean;
 }
 
 interface IMap {
