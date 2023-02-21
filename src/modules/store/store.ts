@@ -28,7 +28,7 @@ export const gameSlice = createSlice({
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, moveTo: action.payload },
+          hero: { ...state.player.hero, moveTo: action.payload, isMoving: true },
         },
       };
     },
@@ -37,7 +37,7 @@ export const gameSlice = createSlice({
         ...state,
         player: {
           ...state.player,
-          hero: { ...state.player.hero, moveTo: undefined },
+          hero: { ...state.player.hero, moveTo: undefined, isMoving: false },
         },
       };
     },
