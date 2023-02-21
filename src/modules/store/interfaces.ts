@@ -8,6 +8,7 @@ export type IInitMapFieldType = 'M' | 'G' | 'D';
 interface IInitMap {
   fieldSize: number;
   fields: IInitMapFieldType[][];
+  resources: IResource[];
 }
 
 export interface IInitStore {
@@ -46,6 +47,7 @@ interface IHero {
 interface IMap {
   fieldSize: number;
   fields: IField[][];
+  resources: IResource[];
 }
 
 export interface IGameStore {
@@ -53,4 +55,16 @@ export interface IGameStore {
   turn: number;
   player: { hero: IHero };
   cursor: { location: ILocation };
+}
+
+export interface IResource {
+  location: ILocation;
+  type: ResourceType;
+  amount: number;
+}
+
+export enum ResourceType {
+  gold = 'gold',
+  rock = 'rock',
+  wood = 'wood',
 }

@@ -21,6 +21,7 @@ export const toGameStore = (store: IInitStore): IGameStore => ({
   map: {
     ...store.map,
     fields: mapFields(store.map.fields),
+    resources: store.map.resources,
   },
   player: { ...store.player, hero: { ...store.player.hero, stepsLeft: 5 } },
 });
