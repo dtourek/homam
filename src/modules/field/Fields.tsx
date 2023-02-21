@@ -1,17 +1,16 @@
 import React from 'react';
 import { useAppSelector } from 'homam/store';
 import { getFieldMeta } from 'homam/modules/field/utils';
+import { IField } from 'homam/modules/store/interfaces';
+import { Resource } from 'homam/modules/resource/Resource';
 
 interface IProps {
-  x: number;
-  y: number;
+  field: IField;
   color: string;
   fieldSize: number;
 }
 
-const Field = ({ y, x, color, fieldSize }: IProps) => (
-  <rect key={`${x},${y}`} x={x * fieldSize} y={y * fieldSize} height={fieldSize} width={fieldSize} fill={color} stroke="white" />
-);
+const Field = ({ field, color, fieldSize }: IProps) => <rect x={field.x * fieldSize} y={field.y * fieldSize} height={fieldSize} width={fieldSize} fill={color} stroke="white" />;
 
 // TODO - fields to 1D array to improve peformance
 export const Fields = () => {
@@ -21,8 +20,12 @@ export const Fields = () => {
     <>
       {store.map.fields.map((row) =>
         row.flatMap((field) => {
+          const resource = store.map.resources.find((resource) => resource.location.x === field.x && resource.location.y === field.y);
           const { color } = getFieldMeta(field.type);
-          return <Field key={`${field.x}-${field.y}`} x={field.x} y={field.y} color={color} fieldSize={store.map.fieldSize} />;
+          if (resource) {
+            return <Resource resource={resource} fieldColor={color} />;
+          }
+          return <Field key={`${field.x}-${field.y}`} field={field} color={color} fieldSize={store.map.fieldSize} />;
         }),
       )}
     </>
