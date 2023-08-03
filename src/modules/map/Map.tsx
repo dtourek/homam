@@ -6,7 +6,7 @@ import { Fields } from 'homam/modules/field/Fields';
 import { cutHead, isSameLocation, locationFromMouseEvent } from 'homam/modules/utils';
 import { getStepCoordinates, ShortestPath, toAdjacencyList } from 'homam/modules/path/shortestPath';
 import { IRawPath } from 'homam/modules/path/interfaces';
-import { FieldType, IField } from 'homam/modules/store/interfaces';
+import { FieldType, IField, IResource } from 'homam/modules/store/interfaces';
 import { pipe } from 'fputils';
 import { ILocation } from '../../../_OLD/src/modules/player/interfaces';
 import { MoveToCursor } from 'homam/modules/cursor/MoveToCursor';
@@ -18,9 +18,9 @@ const locationToFieldCoordinates = ({ x, y }: ILocation, fieldSize: number): ILo
 const isObstacleField = ({ x, y }: ILocation, fields: IField[][]) => fields[y][x].type === FieldType.mountain;
 
 const getShortestPath =
-  (fields: IField[][]) =>
+  (fields: IField[][], resources: IResource[]) =>
   ({ start, end }: { start: string; end: string }): IRawPath => {
-    return new ShortestPath(toAdjacencyList(fields)).get(start, end);
+    return new ShortestPath(toAdjacencyList(fields, resources, end)).get(start, end);
   };
 const cutHeadPath = (raw: IRawPath): IRawPath => ({
   ...raw,
@@ -67,7 +67,7 @@ export const Map = () => {
       start: coordinatesToString(player.hero.location, map.fieldSize),
       end: coordinatesToString(location, map.fieldSize),
     };
-    const path = pipe(edges, getShortestPath(map.fields), cutHeadPath);
+    const path = pipe(edges, getShortestPath(map.fields, map.resources), cutHeadPath);
     dispatch(
       heroPath({
         fields: pathToFields(path, map.fields, map.fieldSize),

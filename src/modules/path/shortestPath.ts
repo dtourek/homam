@@ -1,4 +1,4 @@
-import { FieldType, IField, ILocation } from 'homam/modules/store/interfaces';
+import { FieldType, IField, ILocation, IResource } from 'homam/modules/store/interfaces';
 import { AdjacencyListEdge, IAdjacencyList, IRawPath } from 'homam/modules/path/interfaces';
 import { getFieldMeta } from 'homam/modules/field/utils';
 
@@ -71,16 +71,24 @@ const getNeighbours = (x: number, y: number, fields: IField[][], row: IField[]):
 };
 
 const isObstacleField = (field: IField): boolean => field.type === FieldType.mountain;
+const isResourceField = (resources: IResource[], x: number, y: number) => resources.find((resource) => resource.location.x === x && resource.location.y === y);
+const isEndPathLocation = (endPathLocation: string, x: number, y: number) => `${x},${y}` === endPathLocation;
 
 /**
  * From map to adjacency list used in Dijkstra`s algorithm to find shortest path between 2 nodes
  * @param {IField[][]} fields
+ * @param resources
+ * @param {string} endPathLocation
  * @return IAdjacencyList
  */
-export const toAdjacencyList = (fields: IField[][]): IAdjacencyList => {
+export const toAdjacencyList = (fields: IField[][], resources: IResource[], endPathLocation: string): IAdjacencyList => {
   const result: IAdjacencyList = {};
-  fields.forEach((row) => {
-    row.forEach((field) => {
+  fields.forEach((row, y) => {
+    row.forEach((field, x) => {
+      if (isResourceField(resources, x, y) && !isEndPathLocation(endPathLocation, x, y)) {
+        return;
+      }
+
       if (!isObstacleField(field)) {
         result[coordinatesToString({ x: field.x, y: field.y })] = getNeighbours(field.x, field.y, fields, row);
       }
